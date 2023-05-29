@@ -1,0 +1,552 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home Page</title>
+    <link rel="icon" href="https://www.phuckhanggem.com/_imageslibrary/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous" />
+    <!-- Font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <!-- owl carousel -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+      integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+      integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link href="https://fonts.cdnfonts.com/css/exo-2" rel="stylesheet" />
+
+    <!-- Animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="./css/Homepage/Homepage.CustomClass.css" />
+    <link rel="stylesheet" href="./css/Homepage/Homepage.style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header__content">
+        <img class="animate__animated animate__lightSpeedInRight" src="./asset/Homepage/imgs/logo-1.png" alt="" />
+        <!-- <p class="animate__animated animate__lightSpeedInRight">BAKE</p> -->
+        <nav>
+          <ul>
+            <li>
+              <a href="#">HOME</a>
+              <div class="line"></div>
+            </li>
+            <li><a href="#">ABOUT</a></li>
+            <li><a href="#">SERVICE</a></li>
+            <li><a href="#">GALLARY</a></li>
+            <li><a href="#">CLIENTS</a></li>
+            <li><a href="#">CONTACT</a></li>
+          </ul>
+        </nav>
+        <i class="fas fa-bars haeder__menu-icon"></i>
+      </div>
+    </header>
+
+    <!-- slide -->
+    <section
+      class="slide text-white bg-img-fix p-t70 p-b40 overlay-black-light choose-us"
+      style="background-image: url(./asset/Homepage/imgs/slide-1.jpg)">
+      <div class="container m-auto mt-lg-1 animate__animated animate__fadeInRight">
+        <h1 style="">NUMBER 1</h1>
+        <p>ENVIRONMENTAL MANAGEMENT <br />AGENCY</p>
+      </div>
+    </section>
+    <!-- end slide -->
+
+    <!-- summary -->
+    <section class="summary pb-4">
+      <div class="container m-auto">
+        <div class="row g-2 content">
+          <div class="col-lg-4 col-sm-12 animate__animated animate__fadeInUpBig">
+            <div class="card item">
+              <div class="card-body text">
+                <h5 class="card-title">ĐỐI TÁC</h5>
+                <p class="card-text">
+                  Nếu bạn là người ủng hộ ý tưởng của chúng tôi và muốn đóng góp hết sức mình, chúng tôi hoan nghênh
+                  bạn!
+                </p>
+              </div>
+              <img src="./asset/Homepage/imgs/bann-img-1.jpg" class="card-img-bottom" alt="..." />
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-12 animate__animated animate__fadeInUpBig">
+            <div class="card item">
+              <div class="card-body text">
+                <h5 class="card-title">GIẤY PHÉP</h5>
+                <p class="card-text">
+                  Mọi người đều có thể tham gia vào sự kiện từ thiện của chúng tôi. Chúng tôi đánh giá tác động của bạn
+                  đối với các dự án của chúng tôi và đánh giá cao sự giúp đỡ của bạn.
+                </p>
+              </div>
+              <img src="./asset/Homepage/imgs/bann-img-2.jpg" class="card-img-bottom" alt="..." />
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-12 animate__animated animate__fadeInUpBig">
+            <div class="card item">
+              <div class="card-body text">
+                <h5 class="card-title">NHIỆM VỤ</h5>
+                <p class="card-text">
+                  Bạn có thể hỗ trợ bất kỳ chiến dịch nào của chúng tôi bằng cách tham gia cá nhân hoặc quyên góp.
+                </p>
+              </div>
+              <img src="./asset/Homepage/imgs/bann-img-3.jpg" class="card-img-bottom" alt="..." />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end summary -->
+
+    <!-- welcome -->
+    <section class="welcome pt-5">
+      <div class="container m-auto text-center">
+        <h1>WELCOME!</h1>
+        <h2>We are committed to protect and enhance our environment</h2>
+        <div class="pt-3">
+          <div class="row g-4 py-5">
+            <div class="col-3 item wow animate__animated animate__fadeInLeftBig">
+              <div><i class="fa-solid fa-cloud icon"></i></div>
+              <h3 class="title py-3">Ý tưởng</h3>
+              <p class="body">
+                Nếu bạn là người ủng hộ ý tưởng của chúng tôi và muốn đóng góp hết sức mình, chúng tôi hoan nghênh bạn!
+              </p>
+            </div>
+            <div class="col-3 item wow animate__animated animate__fadeInLeftBig">
+              <div><i class="fa-brands fa-envira icon"></i></div>
+              <h3 class="title py-3">Hoạt động xanh</h3>
+              <p class="body">
+                Mọi người đều có thể tham gia vào sự kiện từ thiện của chúng tôi. Chúng tôi đánh giá tác động của bạn
+                đối với các dự án của chúng tôi và đánh giá cao sự giúp đỡ của bạn.
+              </p>
+            </div>
+            <div class="col-3 item wow animate__animated animate__fadeInRightBig">
+              <div><i class="fa-brands fa-get-pocket icon"></i></div>
+              <h3 class="title py-3">Mở</h3>
+              <p class="body">
+                Bạn có thể hỗ trợ bất kỳ chiến dịch nào của chúng tôi bằng cách tham gia cá nhân hoặc quyên góp.
+              </p>
+            </div>
+            <div class="col-3 item wow animate__animated animate__fadeInRightBig">
+              <div><i class="fa-solid fa-eye-dropper icon"></i></div>
+              <h3 class="title py-3">Tiếp nhận</h3>
+              <p class="body">
+                Tổ chức của chúng tôi mở rộng ý tưởng cứu hệ sinh thái của thế giới và rất biết ơn mọi đóng góp nhỏ!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end welcome -->
+
+    <!-- currentTopics -->
+    <section class="currentTopics py-3">
+      <div class="container m-auto wow animate__animated animate__fadeInUpBig">
+        <h1 class="py-4">CHỦ ĐỀ HIỆN TẠI</h1>
+        <div class="row g-4">
+          <div class="col-4">
+            <div class="card mb-3">
+              <img src="./asset/Homepage/imgs/toppic-1.jpg" class="card-img-top card-img-bottom" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title text--green">Trải thảm xanh cho đồi núi</h5>
+                <p class="card-text">
+                  Với việc các quốc gia trở nên đa văn hóa hơn, mong muốn và nhu cầu nói một ngôn ngữ thứ hai chưa bao
+                  giờ…
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card mb-3">
+              <img src="./asset/Homepage/imgs/toppic-2.jpg" class="card-img-top card-img-bottom" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title text--green">Trả lại sự cân bằng cho các bải biển</h5>
+                <p class="card-text">
+                  Đây là những nỗ lực đáng được ghi nhận, thể hiện sự lắng nghe phản ứng của dư luận và tiếng nói của
+                  người dân...
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card mb-3">
+              <img src="./asset/Homepage/imgs/toppic-3.jpg" class="card-img-top card-img-bottom" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title text--green">Tận dụng tối đa diện tích đất thổ cư</h5>
+                <p class="card-text">
+                  Đất ở đô thị là đất để xây dựng nhà ở, xây dựng các công trình được quy định để phục vụ đời sống sinh
+                  hoạt của cư dân đô thị trong cùng một...
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end currentTopics -->
+
+    <!-- duty -->
+    <section class="duty">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-xs-12 col-sm-3 col-md-3 item wow animate__animated animate__fadeInLeftBig">
+            <h1 class="text--green number">01.</h1>
+            <h5 class="title py-3">CHÚNG TA LÀM GÌ</h5>
+
+            <ul class="list-unstyled py-3">
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Cấp phép và cho phép
+                </a>
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Thực thi môi trường</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Quản lý tài nguyên và chất thải</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Khí hậu thay đổi</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Kiểm soát môi trường</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Sự đánh giá môi trường</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-12 col-sm-3 col-md-3 item wow animate__animated animate__fadeInUpBig">
+            <h1 class="text--green number">02.</h1>
+            <h5 class="title py-3">NGUỒN LỰC CHO</h5>
+
+            <ul class="list-unstyled py-3">
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Công dân
+                </a>
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Nhà giáo dục</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Các doanh nghiệp</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Chính quyền</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Khí hậu thay đổi</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Thông báo công khai</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-12 col-sm-3 col-md-3 item wow animate__animated animate__fadeInUpBig">
+            <h1 class="text--green number">03.</h1>
+            <h5 class="title py-3">CHƯƠNG TRÌNH</h5>
+
+            <ul class="list-unstyled py-3">
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Thực thi môi trường
+                </a>
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Dự luật 65</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Giáo dục môi trường</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Bảo vệ đại dương</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Công lý môi trường</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Hóa học xanh</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-12 col-sm-3 col-md-3 item wow animate__animated animate__fadeInRightBig">
+            <h1 class="text--green number">04.</h1>
+            <h5 class="title py-3">THÔNG TIN MÔI TRƯỜNG</h5>
+
+            <ul class="list-unstyled py-3">
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Hàng không
+                </a>
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Khí hậu thay đổi</a
+                >
+              </li>
+
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i>Tuân thủ và Thực thi</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Kiểm toán môi trường</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Đất</a
+                >
+              </li>
+              <li>
+                <a class="list-item" href="javascript:void();"
+                  ><i class="fa-solid fa-arrow-right p-2 text--green"></i> Xả rác và đổ rác bất hợp pháp</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end duty -->
+
+    <!-- partner -->
+    <section class="partner">
+      <div class="container">
+        <div class="row py-5">
+          <div class="col-xs-16 col-sm-2 col-md-2 wow animate__animated animate__flip">
+            <img src="./asset/Homepage/imgs/client-1.png" alt="" />
+          </div>
+          <div class="col-xs-16 col-sm-2 col-md-2 wow animate__animated animate__flip">
+            <img src="./asset/Homepage/imgs/client-2.png" alt="" />
+          </div>
+          <div class="col-xs-16 col-sm-2 col-md-2 wow animate__animated animate__flip">
+            <img src="./asset/Homepage/imgs/client-3.png" alt="" />
+          </div>
+          <div class="col-xs-16 col-sm-2 col-md-2 wow animate__animated animate__flip">
+            <img src="./asset/Homepage/imgs/client-4.png" alt="" />
+          </div>
+          <div class="col-xs-16 col-sm-2 col-md-2 wow animate__animated animate__flip">
+            <img src="./asset/Homepage/imgs/client-5.png" alt="" />
+          </div>
+          <div class="col-xs-16 col-sm-2 col-md-2 wow animate__animated animate__flip">
+            <img src="./asset/Homepage/imgs/client-6.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end partner -->
+
+    <footer id="footer">
+      <div class="container">
+        <div class="row text-xs-center text-sm-left text-md-left">
+          <div class="col-xs-12 col-sm-3 col-md-3">
+            <div class="animate__animated animate__fadeInLeft wow">
+              <img class="pb-4" src="./asset/Homepage/imgs/invert-logo.png" alt="" />
+            </div>
+
+            <a> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, </a>
+          </div>
+          <div class="col-xs-12 col-sm-3 col-md-3">
+            <h5>Quick links</h5>
+            <ul class="list-unstyled quick-links">
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Home</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>About</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>FAQ</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Get Started</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Videos</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-sm-3 col-md-3">
+            <h5>Quick links</h5>
+            <ul class="list-unstyled quick-links">
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Home</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>About</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>FAQ</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Get Started</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Videos</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-sm-3 col-md-3">
+            <h5>Quick links</h5>
+            <ul class="list-unstyled quick-links">
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Home</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>About</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>FAQ</a>
+              </li>
+              <li>
+                <a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Get Started</a>
+              </li>
+              <li>
+                <a href="https://wwwe.sunlimetech.com" title="Design and developed by"
+                  ><i class="fa fa-angle-double-right"></i>Imprint</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+            <ul class="list-unstyled list-inline social">
+              <li class="list-inline-item">
+                <a href="javascript:void();"><i class="fa-brands fa-facebook"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="javascript:void();"><i class="fa-brands fa-twitter"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="javascript:void();"><i class="fa-brands fa-instagram"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="javascript:void();"><i class="fa-brands fa-google-plus"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="javascript:void();" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+              </li>
+            </ul>
+          </div>
+          <!-- </hr> -->
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-white">
+            <p>
+              <u><a href="https://www.nationaltransaction.com/">National Transaction Corporation</a></u> is a Registered
+              MSP/ISO of Elavon, Inc. Georgia [a wholly owned subsidiary of U.S. Bancorp, Minneapolis, MN]
+            </p>
+            <p class="h6">
+              &copy All right Reversed.<a class="text-green ml-2" href="https://www.sunlimetech.com" target="_blank"
+                >Sunlimetech</a
+              >
+            </p>
+          </div>
+          <!-- </hr> -->
+        </div>
+      </div>
+    </footer>
+  </body>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+    crossorigin="anonymous"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.slim.min.js"
+    integrity="sha512-yBpuflZmP5lwMzZ03hiCLzA94N0K2vgBtJgqQ2E1meJzmIBfjbb7k4Y23k2i2c/rIeSUGc7jojyIY5waK3ZxCQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+
+  <!-- Waypoints  -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"
+    integrity="sha512-ZKNVEa7gi0Dz4Rq9jXcySgcPiK+5f01CqW+ZoKLLKr9VMXuCsw3RjWiv8ZpIOa0hxO79np7Ec8DDWALM0bDOaQ=="
+    crossorigin="anonymous"></script>
+
+  <script src="./js/Homepage/jquery.countup.min.js"></script>
+  <!-- owl carousel -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+
+  <script src="./js/Homepage/wow.min.js"></script>
+  <script>
+    new WOW().init();
+  </script>
+  <script src="./js/Homepage/main.js"></script>
+</html>

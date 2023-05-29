@@ -1,0 +1,19 @@
+
+// DB migration
+dotnet ef migrations add <InitialCreate> 
+dotnet ef database update
+
+
+// To run in VS code 
+dotnet watch run (or dotnet watch run xyz) 
+
+
+// to generate key.pem files using 
+
+1. download openssl : https://sourceforge.net/projects/gnuwin32/files/openssl/0.9.8h-1/openssl-0.9.8h-1-setup.exe/download?use_mirror=udomain
+2. Open cmd: -> openssl
+3. To gen Private key: genrsa -out <name_of_private_file>.pem 2048 (using 2048 bit)
+4. To gen Public key: rsa -in <name_of_private_file>.pem -pubout -out <name_of_public_file>.pem
+
+
+// JS encrypted must : RSA/ECB/PKCS1Padding --> (recommend using node-forge packgage : https://npmmirror.com/package/node-forge)
