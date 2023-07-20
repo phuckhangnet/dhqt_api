@@ -9,15 +9,19 @@ namespace Project.Models
         public int USERID { get; set; }
         public string? NAME { get; set; }
         public string? PHONE { get; set; }
+        public string? MOBILE { get; set; }
+        public string? PHONESUB { get; set; }
         public string? EMAIL { get; set; }
+        public string? WEBSITE { get; set; }
         public string? EDUCATION { get; set; }
         public string? OFFICE { get; set; }
         public string? MAJOR { get; set; }
+        public string? ABOUTME { get; set; }
         public string? RESEARCH { get; set; }
         public string? SUPERVISION { get; set; }
         public string? PUBLICATION { get; set; }
         public string? LANGUAGE { get; set; }
         public string? TEACHINGCOURSE { get; set; }
-        public string? ABOUTME { get; set; }
+        public string? MOREINFO { get; set; }
     }
 }

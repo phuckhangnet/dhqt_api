@@ -8,5 +8,6 @@ namespace Project.Models
         [System.ComponentModel.DataAnnotations.Key]
         public string? CODE { get; set; }
         public string? DESCRIPTION { get; set; }
+        public string? LANGUAGE { get; set; }
     }
 }

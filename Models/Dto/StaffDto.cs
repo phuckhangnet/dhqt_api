@@ -8,6 +8,7 @@ namespace Project.Models.Dto
         public string? AVATAR { get; set; }
         public int STATUS { get; set; }
         public DateTime CREATEDATE { get; set; }
+        public int? COLINDEX { get; set; }
     }
     public class UserLoginDto : UserDto
     {

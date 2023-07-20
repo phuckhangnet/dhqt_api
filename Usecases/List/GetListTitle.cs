@@ -47,6 +47,9 @@ namespace Project.UseCases.ListTitle
                     case "GET_BY_CODE":
                         list_ListTitle_response = await _dbContext.ListTitle.Where(x => command.Data.Contains(x.CODE)).ToListAsync(cancellationToken);
                         break;
+                    case "GET_ALL_VN":
+                        list_ListTitle_response = await _dbContext.ListTitle.Where(x => x.LANGUAGE == "vn").ToListAsync(cancellationToken);
+                        break;    
                     case "GET_ALL":
                         list_ListTitle_response = await _dbContext.ListTitle.ToListAsync(cancellationToken);
                         break;

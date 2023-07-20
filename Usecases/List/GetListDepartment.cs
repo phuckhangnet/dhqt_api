@@ -47,6 +47,9 @@ namespace Project.UseCases.ListDepartment
                     case "GET_BY_CODE":
                         list_ListDepartment_response = await _dbContext.ListDepartment.Where(x => command.Data.Contains(x.CODE)).ToListAsync(cancellationToken);
                         break;
+                    case "GET_ALL_VN":
+                        list_ListDepartment_response = await _dbContext.ListDepartment.Where(x => x.LANGUAGE == "vn").ToListAsync(cancellationToken);
+                        break;
                     case "GET_ALL":
                         list_ListDepartment_response = await _dbContext.ListDepartment.ToListAsync(cancellationToken);
                         break;

@@ -16,6 +16,8 @@ namespace Project.UseCases.ListItem
     {
         public string? Code { get; set; }
         public string? Description { get; set; }
+        public string? Language { get; set; }
+        public int? Level { get; set; }
         public string? Type { get; set; }
     }
     public class UpdateListItemValidator : AbstractValidator<UpdateListItemCommand>
@@ -47,7 +49,7 @@ namespace Project.UseCases.ListItem
                 {
                     if (command.Type == "position")
                     {
-                        Project.Models.ListPosition? _ListItem_to_update = await _dbContext.ListPosition.FirstOrDefaultAsync(x => x.CODE == command.Code, cancellationToken);
+                        Project.Models.ListPosition? _ListItem_to_update = await _dbContext.ListPosition.FirstOrDefaultAsync(x => x.CODE == command.Code && x.LANGUAGE == command.Language, cancellationToken);
                         if (_ListItem_to_update != null)
                         {
                             _mapper.Map<UpdateListItemCommand, Project.Models.ListPosition>(command, _ListItem_to_update);
@@ -64,7 +66,7 @@ namespace Project.UseCases.ListItem
                     }
                     else if (command.Type == "title")
                     {
-                        Project.Models.ListTitle? _ListItem_to_update = await _dbContext.ListTitle.FirstOrDefaultAsync(x => x.CODE == command.Code, cancellationToken);
+                        Project.Models.ListTitle? _ListItem_to_update = await _dbContext.ListTitle.FirstOrDefaultAsync(x => x.CODE == command.Code && x.LANGUAGE == command.Language, cancellationToken);
                         if (_ListItem_to_update != null)
                         {
                             _mapper.Map<UpdateListItemCommand, Project.Models.ListTitle>(command, _ListItem_to_update);
@@ -81,7 +83,7 @@ namespace Project.UseCases.ListItem
                     }
                     else if (command.Type == "department")
                     {
-                        Project.Models.ListDepartment? _ListItem_to_update = await _dbContext.ListDepartment.FirstOrDefaultAsync(x => x.CODE == command.Code, cancellationToken);
+                        Project.Models.ListDepartment? _ListItem_to_update = await _dbContext.ListDepartment.FirstOrDefaultAsync(x => x.CODE == command.Code && x.LANGUAGE == command.Language, cancellationToken);
                         if (_ListItem_to_update != null)
                         {
                             _mapper.Map<UpdateListItemCommand, Project.Models.ListDepartment>(command, _ListItem_to_update);

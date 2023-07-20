@@ -18,6 +18,8 @@ namespace Project.UseCases.ListItem
     {
         public string? Code { get; set; }
         public string? Description { get; set; }
+        public string? Language { get; set; }
+        public int? Level { get; set; }
         public string? Type { get; set; }
     }
     public class AddListItemValidator : AbstractValidator<AddListItemCommand>

@@ -54,7 +54,7 @@ namespace Project.UseCases.Users
                 else if (command.Type == "GET_ALL")
                 {
 
-                    var title = _dbContext.User_List.Where(x => x.TABLELIST == "TITLE").Join(_dbContext.ListTitle, a => a.LISTCODE, b => b.CODE, (a, b) => new { a, b })
+                    var title = _dbContext.User_List.Where(x => x.TABLELIST == "TITLE").Join(_dbContext.ListTitle.Where(x => x.LANGUAGE == "vn"), a => a.LISTCODE, b => b.CODE, (a, b) => new { a, b })
                                 .GroupBy(g => new { g.a.USERID })
                                 .Select(g => new
                                 {
@@ -62,7 +62,7 @@ namespace Project.UseCases.Users
                                     CODE = string.Join(", ", g.Select(x => x.b.CODE)),
                                     DESCRIPTION = string.Join(", ", g.Select(x => x.b.DESCRIPTION))
                                 });
-                    var position = _dbContext.User_List.Where(x => x.TABLELIST == "POSITION").Join(_dbContext.ListPosition, a => a.LISTCODE, b => b.CODE, (a, b) => new { a, b })
+                    var position = _dbContext.User_List.Where(x => x.TABLELIST == "POSITION").Join(_dbContext.ListPosition.Where(x => x.LANGUAGE == "vn"), a => a.LISTCODE, b => b.CODE, (a, b) => new { a, b })
                                 .GroupBy(g => new { g.a.USERID })
                                 .Select(g => new
                                 {
@@ -70,7 +70,7 @@ namespace Project.UseCases.Users
                                     CODE = string.Join(", ", g.Select(x => x.b.CODE)),
                                     DESCRIPTION = string.Join(", ", g.Select(x => x.b.DESCRIPTION))
                                 });
-                    var department = _dbContext.User_List.Where(x => x.TABLELIST == "DEPARTMENT").Join(_dbContext.ListDepartment, a => a.LISTCODE, b => b.CODE, (a, b) => new { a, b })
+                    var department = _dbContext.User_List.Where(x => x.TABLELIST == "DEPARTMENT").Join(_dbContext.ListDepartment.Where(x => x.LANGUAGE == "vn"), a => a.LISTCODE, b => b.CODE, (a, b) => new { a, b })
                                 .GroupBy(g => new { g.a.USERID })
                                 .Select(g => new
                                 {
@@ -78,17 +78,36 @@ namespace Project.UseCases.Users
                                     CODE = string.Join(", ", g.Select(x => x.b.CODE)),
                                     DESCRIPTION = string.Join(", ", g.Select(x => x.b.DESCRIPTION))
                                 });
-                    var user = _mapper.Map<IEnumerable<UserDto>>(_dbContext.Users).Join(_dbContext.User_Detail, USER => USER.ID, USERDETAIL => USERDETAIL.USERID
-                                , (USER, USERDETAIL) => new
-                                {
-                                    USER,
-                                    USERDETAIL,
-                                    TITLES = title.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
-                                    POSITIONS = position.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
-                                    DEPARTMENTS = department.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
-                                    ROLESDESCRIPTION = string.Join(", ", _dbContext.Role.Where(x => (USER.ROLE + ",").Contains(x.CODE)).Select(x => x.DESCRIPTION.ToString()).ToList()),
-                                });
-
+                    // var user = _mapper.Map<IEnumerable<UserDto>>(_dbContext.Users).Join(_dbContext.User_Detail.Where(x => x.LANGUAGE == "vn"), USER => USER.ID, USERDETAIL => USERDETAIL.USERID
+                    //             , (USER, USERDETAIL)
+                    //             => new
+                    //             {
+                    //                 USER,
+                    //                 USERDETAIL,
+                    //                 TITLES = title.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                    //                 POSITIONS = position.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                    //                 DEPARTMENTS = department.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                    //                 ROLESDESCRIPTION = string.Join(", ", _dbContext.Role.Where(x => (USER.ROLE + ",").Contains(x.CODE)).Select(x => x.DESCRIPTION.ToString()).ToList()),
+                    //             });
+                    // var user = _mapper.Map<IEnumerable<UserDto>>(_dbContext.Users).Select(USER => new
+                    // {
+                    //     USER,
+                    //     USERDETAIL = _dbContext.User_Detail.Where(x => x.USERID == USER.ID).Select(x => x),
+                    //     TITLES = title.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                    //     POSITIONS = position.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                    //     DEPARTMENTS = department.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                    //     ROLESDESCRIPTION = string.Join(", ", _dbContext.Role.Where(x => (USER.ROLE + ",").Contains(x.CODE)).Select(x => x.DESCRIPTION.ToString()).ToList()),
+                    // });
+                    var user = _mapper.Map<IEnumerable<UserDto>>(_dbContext.Users).Select(USER => new
+                    {
+                        USER,
+                        USERDETAIL = _dbContext.User_Detail.Where(x => x.USERID == USER.ID && x.LANGUAGE == "vn").Select(x => x),
+                        USERDETAILENG = _dbContext.User_Detail.Where(x => x.USERID == USER.ID && x.LANGUAGE == "en").Select(x => x),
+                        TITLES = title.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                        POSITIONS = position.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                        DEPARTMENTS = department.Where(x => x.USERID == USER.ID).Select(x => new { CODE = x.CODE, DESCRIPTION = x.DESCRIPTION }).FirstOrDefault(),
+                        ROLESDESCRIPTION = string.Join(", ", _dbContext.Role.Where(x => (USER.ROLE + ",").Contains(x.CODE)).Select(x => x.DESCRIPTION.ToString()).ToList()),
+                    });
                     return new GetUserResponse
                     {
                         MESSAGE = "GET_SUCCESSFUL",

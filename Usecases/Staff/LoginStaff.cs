@@ -14,6 +14,8 @@ namespace Project.UseCases.Users
         public string? MESSAGE { get; set; }
         public HttpStatusCode STATUSCODE { get; set; }
         public UserLoginDto? RESPONSES { get; set; }
+        public dynamic? ERROR { get; set; }
+        public dynamic? arrERROR { get; set; }
         public dynamic? menuList { get; set; }
         public dynamic? roleList { get; set; }
     }
@@ -66,13 +68,13 @@ namespace Project.UseCases.Users
                     };
                 }
                 UserLoginDto _User_login_dto = _mapper.Map<UserLoginDto>(_User_loging);
-                var _User_login_dto_detail = _dbContext.User_Detail.Where(x => x.USERID == _User_login_dto.ID).FirstOrDefault();
+                var _User_login_dto_detail = _dbContext.User_Detail.Where(x => x.USERID == _User_login_dto.ID && x.LANGUAGE == "vn").FirstOrDefault();
                 var user_claims = new Claim[] { };
                 user_claims = new[] {
                         new Claim("ID", _User_login_dto.ID.ToString()),
                         new Claim("Username", _User_login_dto.USERNAME),
                         new Claim("Name", _User_login_dto_detail.NAME),
-                        //new Claim("Code", _User_login_dto.CODE)
+                        //new Claim("Code", _User_login_dto.CODE),s
                     };
                 _User_login_dto.TOKEN = _tokenRepo.BuildToken(user_claims);
                 _User_login_dto.TOKENALIVETIME = _tokenRepo.GetTokenAliveTime();
@@ -101,12 +103,13 @@ namespace Project.UseCases.Users
                     roleList = roleList
                 };
             }
-            catch
+            catch (Exception ex)
             {
                 return new LoginUserResponse
                 {
                     MESSAGE = "LOGIN_FAIL",
-                    STATUSCODE = HttpStatusCode.InternalServerError
+                    STATUSCODE = HttpStatusCode.InternalServerError,
+                    ERROR = ex.ToString(),
                 };
             }
 

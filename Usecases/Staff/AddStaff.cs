@@ -21,20 +21,35 @@ namespace Project.UseCases.Users
         public string? Role { get; set; }
         public string? Name { get; set; }
         public string? Phone { get; set; }
+        public string? Mobile { get; set; }
+        public string? PhoneSub { get; set; }
         public string? Email { get; set; }
+        public string? Website { get; set; }
         public string? Avatar { get; set; }
+        public int? Colindex { get; set; }
         public string? Education { get; set; }
         public string? Office { get; set; }
         public string? Major { get; set; }
+        public string? Aboutme { get; set; }
         public string? Research { get; set; }
         public string? Supervision { get; set; }
         public string? Publication { get; set; }
-        public string? Language { get; set; }
-        public string? Aboutme { get; set; }
         public string? TeachingCourse { get; set; }
+        public string? Moreinfo { get; set; }
         public IEnumerable<string>? Position { get; set; }
         public IEnumerable<string>? Title { get; set; }
         public IEnumerable<string>? Department { get; set; }
+        //public string? Aboutme_Eng { get; set; }
+        public string? Name_Eng { get; set; }
+        public string? Education_Eng { get; set; }
+        public string? Office_Eng { get; set; }
+        public string? Major_Eng { get; set; }
+        public string? Aboutme_Eng { get; set; }
+        public string? Research_Eng { get; set; }
+        public string? Supervision_Eng { get; set; }
+        public string? Publication_Eng { get; set; }
+        public string? TeachingCourse_Eng { get; set; }
+        public string? Moreinfo_Eng { get; set; }
     }
     public class AddUserValidator : AbstractValidator<AddUserCommand>
     {
@@ -81,7 +96,9 @@ namespace Project.UseCases.Users
                         };
                     }
                     Project.Models.User _User_to_add = _mapper.Map<Project.Models.User>(command);
+                    List<Project.Models.UserDetail> listDetail = new List<Project.Models.UserDetail>();
                     Project.Models.UserDetail _User_Detail_to_add = _mapper.Map<Project.Models.UserDetail>(command);
+                    Project.Models.UserDetail _User_Detail_Eng_to_add = _mapper.Map<Project.Models.UserDetail>(command);
                     Project.Models.UserList _User_List_to_add = _mapper.Map<Project.Models.UserList>(command);
                     if (!string.IsNullOrEmpty(command.Password))
                     {
@@ -96,7 +113,24 @@ namespace Project.UseCases.Users
 
                     //add user detail
                     _User_Detail_to_add.USERID = _User_to_add.ID;
+                    _User_Detail_to_add.LANGUAGE = "vn";
                     _dbContext.Add(_User_Detail_to_add);
+                    _dbContext.SaveChanges();
+                    _dbContext.ChangeTracker.Clear();
+
+                    _User_Detail_Eng_to_add.USERID = _User_to_add.ID;
+                    _User_Detail_Eng_to_add.NAME = command.Name_Eng;
+                    _User_Detail_Eng_to_add.EDUCATION = command.Education_Eng;
+                    _User_Detail_Eng_to_add.OFFICE = command.Office_Eng;
+                    _User_Detail_Eng_to_add.MAJOR = command.Major_Eng;
+                    _User_Detail_Eng_to_add.ABOUTME = command.Aboutme_Eng;
+                    _User_Detail_Eng_to_add.RESEARCH = command.Research_Eng;
+                    _User_Detail_Eng_to_add.SUPERVISION = command.Supervision_Eng;
+                    _User_Detail_Eng_to_add.PUBLICATION = command.Publication_Eng;
+                    _User_Detail_Eng_to_add.TEACHINGCOURSE = command.TeachingCourse_Eng;
+                    _User_Detail_Eng_to_add.MOREINFO = command.Moreinfo_Eng;
+                    _User_Detail_Eng_to_add.LANGUAGE = "en";
+                    _dbContext.Add(_User_Detail_Eng_to_add);
                     _dbContext.SaveChanges();
 
                     //add user position

@@ -13,6 +13,7 @@ namespace Project.UseCases.Article
         public string? MESSAGE { get; set; }
         public HttpStatusCode STATUSCODE { get; set; }
         public IEnumerable<ArticleDto>? RESPONSES { get; set; }
+        public dynamic? ERROR { get; set; }
         public dynamic? articlemenu { get; set; }
     }
     public class GetArticleCommand : IRequest<GetArticleResponse>
@@ -89,9 +90,8 @@ namespace Project.UseCases.Article
                     var result2 = from arc in _dbContext.Articles.ToList()
                                   join arcme in Article_Menu on arc.ID equals arcme.ARTICLEID
                                   join urs in _dbContext.Users.ToList() on arc.IDUSERCREATE equals urs.ID
-                                  join ursdetail in _dbContext.User_Detail.ToList() on urs.ID equals ursdetail.USERID
                                   orderby arc.CREATEDATE descending
-                                  select new { arc, arcme.MENUID, arcme.MENUNAME, ursdetail.NAME };
+                                  select new { arc, arcme.MENUID, arcme.MENUNAME, urs.USERNAME };
                     return new GetArticleResponse
                     {
                         MESSAGE = "GET_SUCCESSFUL",
@@ -121,10 +121,9 @@ namespace Project.UseCases.Article
                     var result2 = from arc in _dbContext.Articles.ToList()
                                   join arcme in Article_Menu on arc.ID equals arcme.ARTICLEID
                                   join urs in _dbContext.Users.ToList() on arc.IDUSERCREATE equals urs.ID
-                                  join ursdetail in _dbContext.User_Detail.ToList() on urs.ID equals ursdetail.USERID
                                   where arc.IDUSERCREATE == _iduser
                                   orderby arc.CREATEDATE descending
-                                  select new { arc, arcme.MENUID, arcme.MENUNAME, ursdetail.NAME };
+                                  select new { arc, arcme.MENUID, arcme.MENUNAME, urs.USERNAME };
                     return new GetArticleResponse
                     {
                         MESSAGE = "GET_SUCCESSFUL",
@@ -245,12 +244,13 @@ namespace Project.UseCases.Article
                     };
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 return new GetArticleResponse
                 {
                     MESSAGE = "GET_FAIL",
-                    STATUSCODE = HttpStatusCode.InternalServerError
+                    STATUSCODE = HttpStatusCode.InternalServerError,
+                    ERROR = ex.ToString(),
                 };
             }
 

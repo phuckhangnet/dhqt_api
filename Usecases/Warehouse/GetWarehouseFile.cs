@@ -53,8 +53,7 @@ namespace Project.UseCases.WarehouseFile
                         list_WarehouseFile_response = from warehouse_file in _dbContext.Upload_Files_Warehouse.ToList()
                                                       orderby warehouse_file.ID descending
                                                       join urs in _dbContext.Users.ToList() on warehouse_file.IDUSER equals urs.ID
-                                                      join ursdetail in _dbContext.User_Detail.ToList() on urs.ID equals ursdetail.USERID
-                                                      select new { warehouse_file, createuser = ursdetail.NAME };
+                                                      select new { warehouse_file, createuser = urs.USERNAME };
 
                         break;
                 }

@@ -52,4 +52,20 @@ public class ArticleController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("link")]
+    [AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> LinkArticle([FromBody] LinkArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("unlink")]
+    [AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> UnlinkArticle([FromBody] UnlinkArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
 }

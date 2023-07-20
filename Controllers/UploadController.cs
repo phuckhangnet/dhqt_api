@@ -89,7 +89,7 @@ public class UploadController : Controller
                             _files_upload.REALNAME = file.FileName;
                             _files_upload.FILENAME = file_name;
                             _files_upload.FILESIZE = Convert.ToInt32(file.Length);
-                            _files_upload.FILEEXTENSION = file.ContentType;
+                            _files_upload.FILEEXTENSION = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
                             _files_upload.IDUSER = Int32.Parse(iduser);
                             Project.Models.Upload_Files_Warehouse _files_to_add_db = _mapper.Map<Project.Models.Upload_Files_Warehouse>(_files_upload);
                             _dbContext.Add(_files_to_add_db);
@@ -112,8 +112,6 @@ public class UploadController : Controller
                             _dbContext.SaveChanges();
                             dbContextTransaction.Commit();
                         }
-
-
                     }
                 }
                 return files_uploaded;
