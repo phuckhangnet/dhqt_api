@@ -7,14 +7,14 @@ using Project.Models.Dto;
 
 namespace Project.UseCases.Article
 {
-    public class AddArticleResponse
+    public class AddDraftArticleResponse
     {
         public string? MESSAGE { get; set; }
         public HttpStatusCode STATUSCODE { get; set; }
         public ArticleDto? RESPONSES { get; set; }
         public dynamic? ERROR { get; set; }
     }
-    public class AddArticleCommand : IRequest<AddArticleResponse>
+    public class AddDraftArticleCommand : IRequest<AddDraftArticleResponse>
     {
         public string? Avatar { get; set; }
         public string? Title { get; set; }
@@ -24,9 +24,9 @@ namespace Project.UseCases.Article
         public string? Language { get; set; }
         public string? ArticleContent { get; set; }
     }
-    public class AddArticleValidator : AbstractValidator<AddArticleCommand>
+    public class AddDraftArticleValidator : AbstractValidator<AddDraftArticleCommand>
     {
-        public AddArticleValidator()
+        public AddDraftArticleValidator()
         {
             RuleFor(x => x.Title).NotNull().NotEmpty().WithMessage("TITLE CANNOT BE EMPTY");
             RuleFor(x => x.ArticleContent).NotNull().NotEmpty().WithMessage("ARTICLE CONTENT CANNOT BE EMPTY");
@@ -36,19 +36,19 @@ namespace Project.UseCases.Article
             RuleFor(x => x.Menu).NotNull().NotEmpty().WithMessage("MENU CANNOT BE EMPTY");
         }
     }
-    public class AddArticleHandler : IRequestHandler<AddArticleCommand, AddArticleResponse>
+    public class AddDraftArticleHandler : IRequestHandler<AddDraftArticleCommand, AddDraftArticleResponse>
     {
         private readonly IMapper _mapper;
         private readonly DataContext _dbContext;
         private readonly IHttpContextAccessor _accessor;
 
-        public AddArticleHandler(DataContext dbContext, IMapper mapper, IHttpContextAccessor accessor)
+        public AddDraftArticleHandler(DataContext dbContext, IMapper mapper, IHttpContextAccessor accessor)
         {
             _mapper = mapper;
             _dbContext = dbContext;
             _accessor = accessor;
         }
-        public async Task<AddArticleResponse> Handle(AddArticleCommand command, CancellationToken cancellationToken)
+        public async Task<AddDraftArticleResponse> Handle(AddDraftArticleCommand command, CancellationToken cancellationToken)
         {
             using (var dbContextTransaction = _dbContext.Database.BeginTransaction())
             {
@@ -62,7 +62,7 @@ namespace Project.UseCases.Article
                     _Article_to_add.LATESTEDITDATE = DateTime.Now;
                     _Article_to_add.PRIORITYLEVEL = 1;
                     _Article_to_add.IDUSERCREATE = Int32.Parse(iduser);
-                    _Article_to_add.STATUS = "POSTED";
+                    _Article_to_add.STATUS = "DRAFT";
                     _dbContext.Add(_Article_to_add);
                     _dbContext.SaveChanges();
                     _dbContext.Entry(_Article_to_add).GetDatabaseValues();
@@ -77,7 +77,7 @@ namespace Project.UseCases.Article
                     }
 
                     dbContextTransaction.Commit();
-                    return new AddArticleResponse
+                    return new AddDraftArticleResponse
                     {
                         MESSAGE = "ADD_SUCCESSFUL",
                         STATUSCODE = HttpStatusCode.OK,
@@ -87,7 +87,7 @@ namespace Project.UseCases.Article
                 catch
                 {
                     dbContextTransaction.Rollback();
-                    return new AddArticleResponse
+                    return new AddDraftArticleResponse
                     {
                         MESSAGE = "ADD_FAIL",
                         STATUSCODE = HttpStatusCode.InternalServerError

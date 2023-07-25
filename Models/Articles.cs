@@ -21,5 +21,6 @@ namespace Project.Models
         public int IDUSERCREATE { get; set; }
         public int IDUSEREDIT { get; set; }
         public int? LINKED { get; set; }
+        public string? STATUS { get; set; }
     }
 }

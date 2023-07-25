@@ -87,6 +87,13 @@ namespace Project.Models
             CreateMap<AddArticleCommand, Articles>();
         }
     }
+    public class AddDraftArticleMappingProfile : Profile
+    {
+        public AddDraftArticleMappingProfile()
+        {
+            CreateMap<AddDraftArticleCommand, Articles>();
+        }
+    }
     public class UpdateArticleMappingProfile : Profile
     {
         public UpdateArticleMappingProfile()
@@ -115,6 +122,13 @@ namespace Project.Models
         public AddBlogMappingProfile()
         {
             CreateMap<AddBlogCommand, Blogs>();
+        }
+    }
+    public class AddDraftBlogMappingProfile : Profile
+    {
+        public AddDraftBlogMappingProfile()
+        {
+            CreateMap<AddDraftBlogCommand, Blogs>();
         }
     }
     public class UpdateBlogMappingProfile : Profile

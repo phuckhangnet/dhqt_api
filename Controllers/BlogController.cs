@@ -21,6 +21,22 @@ public class BlogController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("add_draft")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> AddDraftBlog([FromBody] AddDraftBlogCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("post_draft")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> PostDraftBlog([FromBody] PostDraftBlogCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
     [HttpPost("query")]
     public async Task<IActionResult> GetListBlog([FromBody] GetBlogCommand command, [FromServices] IMediator mediator)
     {

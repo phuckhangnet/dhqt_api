@@ -16,5 +16,6 @@ namespace Project.Models
         public int IDUSER { get; set; }
         public string? LANGUAGE { get; set; }
         public Int16? LIKES { get; set; }
+        public string? STATUS { get; set; }
     }
 }
