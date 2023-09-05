@@ -52,6 +52,14 @@ public class ArticleController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("update_no_menu")]
+    [AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> UpdateNoMenuArticle([FromBody] UpdateNoMenuArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
     [HttpPost("delete")]
     [AuthorizeAttribute]
     //[DecryptedAttribute]
@@ -80,6 +88,14 @@ public class ArticleController : Controller
     [AuthorizeAttribute]
     //[DecryptedAttribute]
     public async Task<IActionResult> UnlinkArticle([FromBody] UnlinkArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+
+    [HttpPost("GetArticleContent")]
+    [AuthorizeAttribute]
+    public async Task<IActionResult> GetArticleContent([FromBody] GetArticleContentCommand command, [FromServices] IMediator mediator)
     {
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);

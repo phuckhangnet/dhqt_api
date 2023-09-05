@@ -5,6 +5,7 @@ using System.Net;
 using Project.Data;
 using Project.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace Project.UseCases.Article
 {
@@ -14,7 +15,8 @@ namespace Project.UseCases.Article
         public HttpStatusCode STATUSCODE { get; set; }
         public IEnumerable<ArticleDto>? RESPONSES { get; set; }
         public dynamic? ERROR { get; set; }
-        public dynamic? articlemenu { get; set; }
+        public dynamic? Articlemenu { get; set; }
+        public dynamic? Articlelist { get; set; }
     }
     public class GetArticleCommand : IRequest<GetArticleResponse>
     {
@@ -60,7 +62,7 @@ namespace Project.UseCases.Article
                         STATUSCODE = HttpStatusCode.InternalServerError
                     };
                 }
-                else if (command.Type != "GET_ALL" && command.Type != "GET_ALL_FROM_USER" && command.Type != "GET_BY_ID" && command.Type != "GET_BY_HASTAG" && command.Type != "GET_BY_MENU_ID")
+                else if (command.Type != "GET_ALL" && command.Type != "GET_ALL_FROM_USER" && command.Type != "GET_BY_ID" && command.Type != "GET_BY_HASTAG" && command.Type != "GET_BY_MENU_ID" && command.Type != "GET_NO_MENU_ARTICLE" && command.Type != "GET_LIST")
                 {
                     return new GetArticleResponse
                     {
@@ -91,12 +93,12 @@ namespace Project.UseCases.Article
                                   join arcme in Article_Menu on arc.ID equals arcme.ARTICLEID
                                   join urs in _dbContext.Users.ToList() on arc.IDUSERCREATE equals urs.ID
                                   orderby arc.CREATEDATE descending
-                                  select new { arc, arcme.MENUID, arcme.MENUNAME, urs.USERNAME };
+                                  select new { arc = new { arc.ID, arc.TITLE, arc.SUMMARY, arc.AVATAR, arc.HASTAG, arc.LANGUAGE, arc.STATUS, arc.PRIORITYLEVEL, arc.LINKED, arc.LATESTEDITDATE, arc.IDUSERCREATE, arc.IDUSEREDIT, arc.CREATEDATE }, arcme.MENUID, arcme.MENUNAME, urs.USERNAME };
                     return new GetArticleResponse
                     {
                         MESSAGE = "GET_SUCCESSFUL",
                         STATUSCODE = HttpStatusCode.OK,
-                        articlemenu = result2,
+                        Articlemenu = result2,
                     };
                 }
                 else if (command.Type == "GET_ALL_FROM_USER")
@@ -129,18 +131,43 @@ namespace Project.UseCases.Article
                         MESSAGE = "GET_SUCCESSFUL",
                         STATUSCODE = HttpStatusCode.OK,
                         //RESPONSES = _mapper.Map<IEnumerable<ArticleDto>>(result)
-                        articlemenu = result2,
+                        Articlemenu = result2,
+                    };
+                }
+                else if (command.Type == "GET_NO_MENU_ARTICLE")
+                {
+                    var list1 = _dbContext.Articles.Where(x => !_dbContext.Article_Menu.Select(x => x.ARTICLEID).Contains(x.ID)).ToList();
+                    var list2 = _dbContext.Articles.Join(_dbContext.Article_Menu.Where(x => x.MENUID == 0), a => a.ID, b => b.ARTICLEID, (a, b) => new { a }).ToList();
+                    return new GetArticleResponse
+                    {
+                        MESSAGE = "GET_SUCCESSFUL",
+                        STATUSCODE = HttpStatusCode.OK,
+                        Articlemenu = list1,
+                        Articlelist = list2,
                     };
                 }
                 else
                 {
                     if (command.Data.Count() == 0)
                     {
-                        return new GetArticleResponse
+                        if (command.Type != "GET_LIST")
                         {
-                            MESSAGE = "MISSING_PARAMETER_DATA",
-                            STATUSCODE = HttpStatusCode.InternalServerError
-                        };
+                            return new GetArticleResponse
+                            {
+                                MESSAGE = "MISSING_PARAMETER_DATA",
+                                STATUSCODE = HttpStatusCode.InternalServerError
+                            };
+                        }
+                        else
+                        {
+                            var articleQuery = await _dbContext.Articles.Select(x => new { x.ID, x.TITLE, x.SUMMARY, x.AVATAR, x.HASTAG, x.LANGUAGE, x.STATUS, x.PRIORITYLEVEL, x.LINKED, x.LATESTEDITDATE, x.IDUSERCREATE, x.IDUSEREDIT, x.CREATEDATE }).ToListAsync(cancellationToken);
+                            return new GetArticleResponse
+                            {
+                                MESSAGE = "GET_SUCCESSFUL",
+                                STATUSCODE = HttpStatusCode.OK,
+                                Articlemenu = articleQuery,
+                            };
+                        }
                     }
                     else
                     {

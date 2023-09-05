@@ -78,6 +78,7 @@ namespace Project.UseCases.Users
                     };
                 _User_login_dto.TOKEN = _tokenRepo.BuildToken(user_claims);
                 _User_login_dto.TOKENALIVETIME = _tokenRepo.GetTokenAliveTime();
+                _User_login_dto.KEY = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(command.Username)) + "_" + System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(command.Password));
                 var iduser = _User_login_dto.ID.ToString();
                 var _iduser = Int32.Parse(iduser);
                 var user = _dbContext.Users.Where(x => x.ID == _iduser).ToList();
@@ -100,7 +101,7 @@ namespace Project.UseCases.Users
                     STATUSCODE = HttpStatusCode.OK,
                     RESPONSES = _User_login_dto,
                     menuList = result,
-                    roleList = roleList
+                    roleList = roleList,
                 };
             }
             catch (Exception ex)

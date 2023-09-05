@@ -12,6 +12,7 @@ namespace Project.UseCases.Menu
         public string? MESSAGE { get; set; }
         public HttpStatusCode STATUSCODE { get; set; }
         public dynamic? RESPONSES { get; set; }
+        public dynamic? ROLEUSE { get; set; }
     }
     public class GetMenuCommand : IRequest<GetMenuResponse>
     {
@@ -60,6 +61,20 @@ namespace Project.UseCases.Menu
                             MESSAGE = "GET_SUCCESSFUL",
                             STATUSCODE = HttpStatusCode.OK,
                             RESPONSES = _mapper.Map<IEnumerable<MenuDto>>(list_Menu_response)
+                        };
+                    case "GET_MENU_WITH_ROLE_USE":
+                        //var list_Menu = await _dbContext.Menu.Join(_dbContext.Role_Menu, a => a.ID, b => b.MENUID, (a, b) => new { menu = a, roleuse = b.ROLECODE }).ToListAsync(cancellationToken);
+                        var list_Menu = _dbContext.Role_Menu.ToList();
+                        var list_Menu_Role = _mapper.Map<IEnumerable<MenuDto>>(_dbContext.Menu).Select(MENU => new
+                        {
+                            MENU,
+                            ROLES = _dbContext.Role_Menu.Where(x => x.MENUID == MENU.ID).Select(x => x.ROLECODE).ToList(),
+                        });
+                        return new GetMenuResponse
+                        {
+                            MESSAGE = "GET_SUCCESSFUL",
+                            STATUSCODE = HttpStatusCode.OK,
+                            RESPONSES = list_Menu_Role,
                         };
                     case "GET_BY_ROLE":
                         var result = await _dbContext.Role_Menu.Where(x => x.ROLECODE == command.Role).Join(_dbContext.Role, x => x.ROLECODE, x => x.CODE, (a, b) => new { a.MENUID, b.DESCRIPTION }).ToListAsync();

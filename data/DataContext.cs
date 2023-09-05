@@ -25,6 +25,7 @@ namespace Project.Data
         public DbSet<Project.Models.Upload_Files_Mart> Upload_Files_Mart { get; set; }
         public DbSet<Project.Models.Upload_Files_Warehouse> Upload_Files_Warehouse { get; set; }
         public DbSet<Project.Models.Article_Link> Article_Link { get; set; }
+        public DbSet<Project.Models.Banner> Banner { get; set; }
 
 
 
@@ -45,10 +46,11 @@ namespace Project.Data
             modelBuilder.Entity<Project.Models.Role>();
             modelBuilder.Entity<Project.Models.Rule>().Property(f => f.ID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Project.Models.Article_Menu>().HasKey(m => new { m.ARTICLEID, m.MENUID });
-            modelBuilder.Entity<Project.Models.Role_Menu>();
+            modelBuilder.Entity<Project.Models.Role_Menu>().HasKey(m => new { m.MENUID, m.ROLECODE });
             modelBuilder.Entity<Project.Models.Upload_Files_Mart>().Property(f => f.ID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Project.Models.Upload_Files_Warehouse>().Property(f => f.ID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Project.Models.Article_Link>().HasKey(m => new { m.SOURCEARTICLE, m.LINKARTICLE });
+            modelBuilder.Entity<Project.Models.Banner>().HasKey(m => new { m.ID, m.TYPE });
         }
 
 

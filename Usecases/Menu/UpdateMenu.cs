@@ -15,20 +15,22 @@ namespace Project.UseCases.Menu
     }
     public class UpdateMenuCommand : IRequest<UpdateMenuResponse>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
+        public string? Name { get; set; }
         public string? Description { get; set; }
-        public string? Hastag { get; set; }
-        public int Menu_Level { get; set; }
+        public int MenuLevel { get; set; }
+        public string? Parent { get; set; }
+        //public Int16? Position { get; set; }
+        public Byte? Visible { get; set; }
+        public Byte? IsActive { get; set; }
+        public Byte? IsPage { get; set; }
+        public IEnumerable<string?>? Role { get; set; }
     }
     public class UpdateMenuValidator : AbstractValidator<UpdateMenuCommand>
     {
         public UpdateMenuValidator()
         {
             RuleFor(x => x.ID).NotNull().NotEmpty().WithMessage("ID không được trống");
-            // RuleFor(x => x.Identify).NotNull().NotEmpty().WithMessage("CMND không được trống");
-            // RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage("Email không được trống");
-            // RuleFor(x => x.Phone).NotNull().NotEmpty().WithMessage("SĐT không được trống");
-            // RuleFor(x => x.Password).NotNull().NotEmpty().WithMessage("Password không được trống");
         }
     }
     public class UpdateMenuHandler : IRequestHandler<UpdateMenuCommand, UpdateMenuResponse>
@@ -53,10 +55,26 @@ namespace Project.UseCases.Menu
                         _mapper.Map<UpdateMenuCommand, Project.Models.Menu>(command, _Menu_to_update);
                         _dbContext.Menu.Update(_Menu_to_update);
                         await _dbContext.SaveChangesAsync(cancellationToken);
+
+                        _dbContext.Role_Menu.RemoveRange(_dbContext.Role_Menu.Where(x => x.MENUID == command.ID));
+                        _dbContext.SaveChanges();
+
+                        Project.Models.Role_Menu _Role_Menu_to_add = new Project.Models.Role_Menu();
+                        if (command.Role != null)
+                        {
+                            foreach (var _role in command.Role)
+                            {
+                                _Role_Menu_to_add.MENUID = command.ID;
+                                _Role_Menu_to_add.ROLECODE = _role;
+                                _dbContext.Add(_Role_Menu_to_add);
+                                _dbContext.SaveChanges();
+                            }
+                        }
+
                         dbContextTransaction.Commit();
                         return new UpdateMenuResponse
                         {
-                            MESSAGE = "Cập nhật thành công!",
+                            MESSAGE = "UPDATE_SUCCESSFUL",
                             STATUSCODE = HttpStatusCode.OK,
                             RESPONSES = _mapper.Map<MenuDto>(_Menu_to_update)
                         };
@@ -65,7 +83,7 @@ namespace Project.UseCases.Menu
                     {
                         return new UpdateMenuResponse
                         {
-                            MESSAGE = "Cập nhật thất bại!",
+                            MESSAGE = "UPDATE_FAIL",
                             STATUSCODE = HttpStatusCode.BadRequest
                         };
                     }
@@ -75,7 +93,7 @@ namespace Project.UseCases.Menu
                     dbContextTransaction.Rollback();
                     return new UpdateMenuResponse
                     {
-                        MESSAGE = "Cập nhật thất bại!",
+                        MESSAGE = "UPDATE_FAIL",
                         STATUSCODE = HttpStatusCode.InternalServerError
                     };
                 }

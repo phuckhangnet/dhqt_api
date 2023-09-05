@@ -108,6 +108,21 @@ namespace Project.Models
             .ForAllOtherMembers(opts => opts.Ignore());
         }
     }
+    public class UpdateNoMenuArticleMappingProfile : Profile
+    {
+        public UpdateNoMenuArticleMappingProfile()
+        {
+            CreateMap<UpdateNoMenuArticleCommand, Articles>()
+            .ForMember(des => des.AVATAR, act => { act.Condition(src => src.Avatar != null); act.MapFrom(src => src.Avatar); })
+            .ForMember(des => des.TITLE, act => { act.Condition(src => src.Title != null); act.MapFrom(src => src.Title); })
+            .ForMember(des => des.SUMMARY, act => { act.Condition(src => src.Summary != null); act.MapFrom(src => src.Summary); })
+            .ForMember(des => des.HASTAG, act => { act.Condition(src => src.Hastag != null); act.MapFrom(src => src.Hastag); })
+            .ForMember(des => des.LANGUAGE, act => { act.Condition(src => src.Language != null); act.MapFrom(src => src.Language); })
+            .ForMember(des => des.ARTICLECONTENT, act => { act.Condition(src => src.Article_Content != null); act.MapFrom(src => src.Article_Content); })
+            .ForAllOtherMembers(opts => opts.Ignore());
+        }
+    }
+
 
     //BLOG
     public class BlogMappingProfile : Profile
@@ -157,6 +172,22 @@ namespace Project.Models
         public AddMenuMappingProfile()
         {
             CreateMap<AddMenuCommand, Menu>();
+            CreateMap<AddMenuCommand, Role_Menu>();
+        }
+    }
+    public class UpdateMenuMappingProfile : Profile
+    {
+        public UpdateMenuMappingProfile()
+        {
+            CreateMap<UpdateMenuCommand, Menu>()
+            .ForMember(des => des.NAME, act => { act.Condition(src => src.Name != null); act.MapFrom(src => src.Name); })
+            .ForMember(des => des.DESCRIPTION, act => { act.Condition(src => src.Description != null); act.MapFrom(src => src.Description); })
+            .ForMember(des => des.MENULEVEL, act => { act.Condition(src => src.MenuLevel != null); act.MapFrom(src => src.MenuLevel); })
+            .ForMember(des => des.PARENT, act => { act.Condition(src => src.Parent != null); act.MapFrom(src => src.Parent); })
+            .ForMember(des => des.VISIBLE, act => { act.Condition(src => src.Visible != null); act.MapFrom(src => src.Visible); })
+            .ForMember(des => des.ISACTIVE, act => { act.Condition(src => src.IsActive != null); act.MapFrom(src => src.IsActive); })
+            .ForMember(des => des.ISPAGE, act => { act.Condition(src => src.IsPage != null); act.MapFrom(src => src.IsPage); })
+            .ForAllOtherMembers(opts => opts.Ignore());
         }
     }
 

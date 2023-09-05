@@ -10,5 +10,6 @@ namespace Project.Models.Dto
         public Int16 POSITION { get; set; }
         public Byte IsActive { get; set; }
         public Byte IsPage { get; set; }
+        public Byte VISIBLE { get; set; }
     }
 }

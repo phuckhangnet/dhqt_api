@@ -73,7 +73,6 @@ namespace Project.UseCases.Article
                         _Article_Menu_to_add.ARTICLEID = id;
                         _dbContext.Add(_Article_Menu_to_add);
                         _dbContext.SaveChanges();
-
                     }
 
                     dbContextTransaction.Commit();
