@@ -18,5 +18,6 @@ namespace Project.Models.Dto
         public DateTime LATESTEDITDATE { get; set; }
         public int IDUSERCREATE { get; set; }
         public int IDUSEREDIT { get; set; }
+        public int? LINKED { get; set; }
     }
 }

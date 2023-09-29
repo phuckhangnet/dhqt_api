@@ -7,6 +7,7 @@ using Project.UseCases.Hastag;
 using Project.UseCases.Role;
 using Project.UseCases.Rule;
 using Project.UseCases.ListItem;
+using Project.UseCases.ListLanguage;
 using Project.Models.Dto;
 
 namespace Project.Models
@@ -48,6 +49,9 @@ namespace Project.Models
             .ForMember(des => des.NAME, act => { act.Condition(src => src.Name != null); act.MapFrom(src => src.Name); })
             .ForMember(des => des.EMAIL, act => { act.Condition(src => src.Email != null); act.MapFrom(src => src.Email); })
             .ForMember(des => des.PHONE, act => { act.Condition(src => src.Phone != null); act.MapFrom(src => src.Phone); })
+            .ForMember(des => des.MOBILE, act => { act.Condition(src => src.Mobile != null); act.MapFrom(src => src.Mobile); })
+            .ForMember(des => des.PHONESUB, act => { act.Condition(src => src.PhoneSub != null); act.MapFrom(src => src.PhoneSub); })
+            .ForMember(des => des.WEBSITE, act => { act.Condition(src => src.Website != null); act.MapFrom(src => src.Website); })
             .ForMember(des => des.EDUCATION, act => { act.Condition(src => src.Education != null); act.MapFrom(src => src.Education); })
             .ForMember(des => des.OFFICE, act => { act.Condition(src => src.Office != null); act.MapFrom(src => src.Office); })
             .ForMember(des => des.MAJOR, act => { act.Condition(src => src.Major != null); act.MapFrom(src => src.Major); })
@@ -56,6 +60,7 @@ namespace Project.Models
             .ForMember(des => des.PUBLICATION, act => { act.Condition(src => src.Publication != null); act.MapFrom(src => src.Publication); })
             .ForMember(des => des.TEACHINGCOURSE, act => { act.Condition(src => src.TeachingCourse != null); act.MapFrom(src => src.TeachingCourse); })
             .ForMember(des => des.ABOUTME, act => { act.Condition(src => src.Aboutme != null); act.MapFrom(src => src.Aboutme); })
+            .ForMember(des => des.MOREINFO, act => { act.Condition(src => src.Moreinfo != null); act.MapFrom(src => src.Moreinfo); })
             .ForAllOtherMembers(opts => opts.Ignore());
         }
     }
@@ -82,6 +87,13 @@ namespace Project.Models
             CreateMap<AddArticleCommand, Articles>();
         }
     }
+    public class AddDraftArticleMappingProfile : Profile
+    {
+        public AddDraftArticleMappingProfile()
+        {
+            CreateMap<AddDraftArticleCommand, Articles>();
+        }
+    }
     public class UpdateArticleMappingProfile : Profile
     {
         public UpdateArticleMappingProfile()
@@ -96,6 +108,21 @@ namespace Project.Models
             .ForAllOtherMembers(opts => opts.Ignore());
         }
     }
+    public class UpdateNoMenuArticleMappingProfile : Profile
+    {
+        public UpdateNoMenuArticleMappingProfile()
+        {
+            CreateMap<UpdateNoMenuArticleCommand, Articles>()
+            .ForMember(des => des.AVATAR, act => { act.Condition(src => src.Avatar != null); act.MapFrom(src => src.Avatar); })
+            .ForMember(des => des.TITLE, act => { act.Condition(src => src.Title != null); act.MapFrom(src => src.Title); })
+            .ForMember(des => des.SUMMARY, act => { act.Condition(src => src.Summary != null); act.MapFrom(src => src.Summary); })
+            .ForMember(des => des.HASTAG, act => { act.Condition(src => src.Hastag != null); act.MapFrom(src => src.Hastag); })
+            .ForMember(des => des.LANGUAGE, act => { act.Condition(src => src.Language != null); act.MapFrom(src => src.Language); })
+            .ForMember(des => des.ARTICLECONTENT, act => { act.Condition(src => src.Article_Content != null); act.MapFrom(src => src.Article_Content); })
+            .ForAllOtherMembers(opts => opts.Ignore());
+        }
+    }
+
 
     //BLOG
     public class BlogMappingProfile : Profile
@@ -110,6 +137,13 @@ namespace Project.Models
         public AddBlogMappingProfile()
         {
             CreateMap<AddBlogCommand, Blogs>();
+        }
+    }
+    public class AddDraftBlogMappingProfile : Profile
+    {
+        public AddDraftBlogMappingProfile()
+        {
+            CreateMap<AddDraftBlogCommand, Blogs>();
         }
     }
     public class UpdateBlogMappingProfile : Profile
@@ -138,6 +172,22 @@ namespace Project.Models
         public AddMenuMappingProfile()
         {
             CreateMap<AddMenuCommand, Menu>();
+            CreateMap<AddMenuCommand, Role_Menu>();
+        }
+    }
+    public class UpdateMenuMappingProfile : Profile
+    {
+        public UpdateMenuMappingProfile()
+        {
+            CreateMap<UpdateMenuCommand, Menu>()
+            .ForMember(des => des.NAME, act => { act.Condition(src => src.Name != null); act.MapFrom(src => src.Name); })
+            .ForMember(des => des.DESCRIPTION, act => { act.Condition(src => src.Description != null); act.MapFrom(src => src.Description); })
+            .ForMember(des => des.MENULEVEL, act => { act.Condition(src => src.MenuLevel != null); act.MapFrom(src => src.MenuLevel); })
+            .ForMember(des => des.PARENT, act => { act.Condition(src => src.Parent != null); act.MapFrom(src => src.Parent); })
+            .ForMember(des => des.VISIBLE, act => { act.Condition(src => src.Visible != null); act.MapFrom(src => src.Visible); })
+            .ForMember(des => des.ISACTIVE, act => { act.Condition(src => src.IsActive != null); act.MapFrom(src => src.IsActive); })
+            .ForMember(des => des.ISPAGE, act => { act.Condition(src => src.IsPage != null); act.MapFrom(src => src.IsPage); })
+            .ForAllOtherMembers(opts => opts.Ignore());
         }
     }
 
@@ -230,12 +280,16 @@ namespace Project.Models
         {
             CreateMap<UpdateListItemCommand, ListPosition>()
             .ForMember(des => des.DESCRIPTION, act => { act.Condition(src => src.Description != null); act.MapFrom(src => src.Description); })
+            .ForMember(des => des.LEVEL, act => { act.Condition(src => src.Level != null); act.MapFrom(src => src.Level); })
             .ForAllOtherMembers(opts => opts.Ignore());
             CreateMap<UpdateListItemCommand, ListTitle>()
             .ForMember(des => des.DESCRIPTION, act => { act.Condition(src => src.Description != null); act.MapFrom(src => src.Description); })
             .ForAllOtherMembers(opts => opts.Ignore());
             CreateMap<UpdateListItemCommand, ListDepartment>()
             .ForMember(des => des.DESCRIPTION, act => { act.Condition(src => src.Description != null); act.MapFrom(src => src.Description); })
+            .ForAllOtherMembers(opts => opts.Ignore());
+            CreateMap<UpdateListLanguageCommand, ListLanguage>()
+            .ForMember(des => des.TEXT, act => { act.Condition(src => src.Text != null); act.MapFrom(src => src.Text); })
             .ForAllOtherMembers(opts => opts.Ignore());
         }
     }

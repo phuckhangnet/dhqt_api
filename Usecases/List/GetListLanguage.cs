@@ -4,70 +4,69 @@ using FluentValidation;
 using System.Net;
 using Project.Data;
 using Microsoft.EntityFrameworkCore;
-namespace Project.UseCases.ListTitle
+namespace Project.UseCases.ListLanguage
 {
-    public class GetListTitleResponse
+    public class GetListLanguageResponse
     {
         public string? MESSAGE { get; set; }
         public HttpStatusCode STATUSCODE { get; set; }
         public IEnumerable<dynamic>? RESPONSES { get; set; }
+        public dynamic? ERROR { get; set; }
     }
-    public class GetListTitleCommand : IRequest<GetListTitleResponse>
+    public class GetListLanguageCommand : IRequest<GetListLanguageResponse>
     {
         public string? Type { get; set; }
         public IEnumerable<string> Data { get; set; } = Enumerable.Empty<string>();
     }
-    public class GetListTitleValidator : AbstractValidator<GetListTitleCommand>
+    public class GetListLanguageValidator : AbstractValidator<GetListLanguageCommand>
     {
-        public GetListTitleValidator()
+        public GetListLanguageValidator()
         {
             RuleFor(x => x.Type).NotNull().NotEmpty().WithMessage("Loại truy vấn không được trống");
             RuleFor(x => x.Data).NotNull().NotEmpty().WithMessage("Thông tin truy vấn không được trống");
         }
     }
-    public class GetListTitleHandler : IRequestHandler<GetListTitleCommand, GetListTitleResponse>
+    public class GetListLanguageHandler : IRequestHandler<GetListLanguageCommand, GetListLanguageResponse>
     {
         private readonly IMapper _mapper;
         private readonly DataContext _dbContext;
 
-        public GetListTitleHandler(DataContext dbContext, IMapper mapper)
+        public GetListLanguageHandler(DataContext dbContext, IMapper mapper)
         {
             _mapper = mapper;
             _dbContext = dbContext;
         }
-        public async Task<GetListTitleResponse> Handle(GetListTitleCommand command, CancellationToken cancellationToken)
+        public async Task<GetListLanguageResponse> Handle(GetListLanguageCommand command, CancellationToken cancellationToken)
         {
 
             try
             {
-                IEnumerable<Project.Models.ListTitle> list_ListTitle_response = Enumerable.Empty<Project.Models.ListTitle>();
+                IEnumerable<Project.Models.ListLanguage> list_ListLanguage_response = Enumerable.Empty<Project.Models.ListLanguage>();
 
                 switch (command.Type)
                 {
                     case "GET_BY_CODE":
-                        list_ListTitle_response = await _dbContext.ListTitle.Where(x => command.Data.Contains(x.CODE)).ToListAsync(cancellationToken);
+                        list_ListLanguage_response = await _dbContext.ListLanguage.Where(x => command.Data.Contains(x.CODE)).ToListAsync(cancellationToken);
                         break;
-                    case "GET_ALL_VN":
-                        list_ListTitle_response = await _dbContext.ListTitle.Where(x => x.LANGUAGE == "vn").ToListAsync(cancellationToken);
-                        break;    
                     case "GET_ALL":
-                        list_ListTitle_response = await _dbContext.ListTitle.ToListAsync(cancellationToken);
+                        list_ListLanguage_response = await _dbContext.ListLanguage.ToListAsync(cancellationToken);
                         break;
                 }
 
-                return new GetListTitleResponse
+                return new GetListLanguageResponse
                 {
                     MESSAGE = "GET_SUCCESSFUL",
                     STATUSCODE = HttpStatusCode.OK,
-                    RESPONSES = list_ListTitle_response
+                    RESPONSES = list_ListLanguage_response
                 };
             }
-            catch
+            catch (Exception ex)
             {
-                return new GetListTitleResponse
+                return new GetListLanguageResponse
                 {
                     MESSAGE = "GET_FAIL",
-                    STATUSCODE = HttpStatusCode.InternalServerError
+                    STATUSCODE = HttpStatusCode.InternalServerError,
+                    ERROR = ex.ToString()
                 };
             }
 

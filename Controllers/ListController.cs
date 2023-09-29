@@ -3,6 +3,7 @@ using MediatR;
 using Project.UseCases.ListPosition;
 using Project.UseCases.ListTitle;
 using Project.UseCases.ListDepartment;
+using Project.UseCases.ListLanguage;
 using Project.UseCases.ListItem;
 
 namespace ProjectBE.Controllers;
@@ -40,6 +41,14 @@ public class ListController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("language")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> GetListLanguage([FromBody] GetListLanguageCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
     [HttpPost("add")]
     //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
     [AuthorizeAttribute]
@@ -56,10 +65,26 @@ public class ListController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("update_language")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> UpdateListLanguage([FromBody] UpdateListLanguageCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
     [HttpPost("delete")]
     //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
     [AuthorizeAttribute]
     public async Task<IActionResult> DeleteList([FromBody] DeleteListItemCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("delete_language")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> DeleteListLanguage([FromBody] DeleteListLanguageCommand command, [FromServices] IMediator mediator)
     {
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);

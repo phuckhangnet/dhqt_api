@@ -22,6 +22,22 @@ public class ArticleController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("add_draft")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> AddDraftArticle([FromBody] AddDraftArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("post_draft")]
+    //[DecryptedAttribute] // Chỉ sử dụng attribute này cho những route cần Encrypt request!!
+    [AuthorizeAttribute]
+    public async Task<IActionResult> PostDraftArticle([FromBody] PostDraftArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
     [HttpPost("query")]
     public async Task<IActionResult> GetListArticle([FromBody] GetArticleCommand command, [FromServices] IMediator mediator)
     {
@@ -32,6 +48,14 @@ public class ArticleController : Controller
     [AuthorizeAttribute]
     //[DecryptedAttribute]
     public async Task<IActionResult> UpdateArticle([FromBody] UpdateArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("update_no_menu")]
+    [AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> UpdateNoMenuArticle([FromBody] UpdateNoMenuArticleCommand command, [FromServices] IMediator mediator)
     {
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
@@ -48,6 +72,30 @@ public class ArticleController : Controller
     [AuthorizeAttribute]
     //[DecryptedAttribute]
     public async Task<IActionResult> ArticleMenu([FromBody] GetArticleMenuCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("link")]
+    [AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> LinkArticle([FromBody] LinkArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+    [HttpPost("unlink")]
+    [AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> UnlinkArticle([FromBody] UnlinkArticleCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
+
+    [HttpPost("GetArticleContent")]
+    [AuthorizeAttribute]
+    public async Task<IActionResult> GetArticleContent([FromBody] GetArticleContentCommand command, [FromServices] IMediator mediator)
     {
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);

@@ -112,8 +112,6 @@ public class UploadController : Controller
                             _dbContext.SaveChanges();
                             dbContextTransaction.Commit();
                         }
-
-
                     }
                 }
                 return files_uploaded;

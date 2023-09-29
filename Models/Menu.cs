@@ -8,7 +8,8 @@ namespace Project.Models
         public int MENULEVEL { get; set; }
         public string? PARENT { get; set; }
         public Int16 POSITION { get; set; }
-        public Byte IsActive { get; set; }
-        public Byte IsPage { get; set; }
+        public Byte ISACTIVE { get; set; }
+        public Byte ISPAGE { get; set; }
+        public Byte VISIBLE { get; set; }
     }
 }

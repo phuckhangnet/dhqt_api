@@ -45,10 +45,13 @@ namespace Project.UseCases.ListPosition
                 switch (command.Type)
                 {
                     case "GET_BY_CODE":
-                        list_ListPosition_response = await _dbContext.ListPosition.Where(x => command.Data.Contains(x.CODE)).ToListAsync(cancellationToken);
+                        list_ListPosition_response = await _dbContext.ListPosition.Where(x => command.Data.Contains(x.CODE)).OrderBy(x => x.LEVEL).ToListAsync(cancellationToken);
+                        break;
+                    case "GET_ALL_VN":
+                        list_ListPosition_response = await _dbContext.ListPosition.Where(x => x.LANGUAGE == "vn").OrderBy(x => x.LEVEL).ToListAsync(cancellationToken);
                         break;
                     case "GET_ALL":
-                        list_ListPosition_response = await _dbContext.ListPosition.ToListAsync(cancellationToken);
+                        list_ListPosition_response = await _dbContext.ListPosition.OrderBy(x => x.LEVEL).ToListAsync(cancellationToken);
                         break;
                 }
 

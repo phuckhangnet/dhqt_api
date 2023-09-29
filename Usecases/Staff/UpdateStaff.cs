@@ -21,18 +21,32 @@ namespace Project.UseCases.Users
         public string? Role { get; set; }
         public string? Name { get; set; }
         public string? Phone { get; set; }
+        public string? Mobile { get; set; }
+        public string? PhoneSub { get; set; }
         public string? Email { get; set; }
+        public string? Website { get; set; }
         public string? Avatar { get; set; }
         public int? Colindex { get; set; }
         public string? Education { get; set; }
         public string? Office { get; set; }
         public string? Major { get; set; }
+        public string? Aboutme { get; set; }
         public string? Research { get; set; }
         public string? Supervision { get; set; }
         public string? Publication { get; set; }
-        public string? Language { get; set; }
+        //public string? Language { get; set; }
         public string? TeachingCourse { get; set; }
-        public string? Aboutme { get; set; }
+        public string? Moreinfo { get; set; }
+        public string? Name_Eng { get; set; }
+        public string? Education_Eng { get; set; }
+        public string? Office_Eng { get; set; }
+        public string? Major_Eng { get; set; }
+        public string? Aboutme_Eng { get; set; }
+        public string? Research_Eng { get; set; }
+        public string? Supervision_Eng { get; set; }
+        public string? Publication_Eng { get; set; }
+        public string? TeachingCourse_Eng { get; set; }
+        public string? Moreinfo_Eng { get; set; }
         public IEnumerable<string>? Position { get; set; }
         public IEnumerable<string>? Title { get; set; }
         public IEnumerable<string>? Department { get; set; }
@@ -66,7 +80,8 @@ namespace Project.UseCases.Users
                 try
                 {
                     Project.Models.User? _User_to_update = await _dbContext.Users.FirstOrDefaultAsync(x => x.ID == command.ID, cancellationToken);
-                    Project.Models.UserDetail? _User_Detail_to_update = await _dbContext.User_Detail.FirstOrDefaultAsync(x => x.USERID == command.ID, cancellationToken);
+                    Project.Models.UserDetail? _User_Detail_to_update = await _dbContext.User_Detail.FirstOrDefaultAsync(x => x.USERID == command.ID && x.LANGUAGE == "vn", cancellationToken);
+                    Project.Models.UserDetail? _User_Detail_Eng_to_update = await _dbContext.User_Detail.FirstOrDefaultAsync(x => x.USERID == command.ID && x.LANGUAGE == "en", cancellationToken);
                     if (_User_to_update != null)
                     {
                         //update account
@@ -78,6 +93,46 @@ namespace Project.UseCases.Users
                         _mapper.Map<UpdateUserCommand, Project.Models.UserDetail>(command, _User_Detail_to_update);
                         _dbContext.User_Detail.Update(_User_Detail_to_update);
                         _dbContext.SaveChanges();
+
+                        //_mapper.Map<UpdateUserCommand, Project.Models.UserDetail>(command, _User_Detail_Eng_to_update);
+                        if (_User_Detail_Eng_to_update != null)
+                        {
+                            _User_Detail_Eng_to_update.NAME = command.Name_Eng;
+                            _User_Detail_Eng_to_update.PHONE = command.Phone;
+                            _User_Detail_Eng_to_update.MOBILE = command.Mobile;
+                            _User_Detail_Eng_to_update.PHONESUB = command.PhoneSub;
+                            _User_Detail_Eng_to_update.EMAIL = command.Email;
+                            _User_Detail_Eng_to_update.WEBSITE = command.Website;
+                            _User_Detail_Eng_to_update.EDUCATION = command.Education_Eng;
+                            _User_Detail_Eng_to_update.OFFICE = command.Office_Eng;
+                            _User_Detail_Eng_to_update.MAJOR = command.Major_Eng;
+                            _User_Detail_Eng_to_update.RESEARCH = command.Research_Eng;
+                            _User_Detail_Eng_to_update.SUPERVISION = command.Supervision_Eng;
+                            _User_Detail_Eng_to_update.PUBLICATION = command.Publication_Eng;
+                            _User_Detail_Eng_to_update.TEACHINGCOURSE = command.TeachingCourse_Eng;
+                            _User_Detail_Eng_to_update.ABOUTME = command.Aboutme_Eng;
+                            _User_Detail_Eng_to_update.MOREINFO = command.Moreinfo_Eng;
+                            _dbContext.User_Detail.Update(_User_Detail_Eng_to_update);
+                            _dbContext.SaveChanges();
+                        }
+                        else
+                        {
+                            Project.Models.UserDetail _User_Detail_Eng_to_add = _mapper.Map<Project.Models.UserDetail>(command);
+                            _User_Detail_Eng_to_add.USERID = command.ID;
+                            _User_Detail_Eng_to_add.ABOUTME = command.Aboutme_Eng;
+                            _User_Detail_Eng_to_add.NAME = command.Name_Eng;
+                            _User_Detail_Eng_to_add.EDUCATION = command.Education_Eng;
+                            _User_Detail_Eng_to_add.OFFICE = command.Office_Eng;
+                            _User_Detail_Eng_to_add.MAJOR = command.Major_Eng;
+                            _User_Detail_Eng_to_add.RESEARCH = command.Research_Eng;
+                            _User_Detail_Eng_to_add.SUPERVISION = command.Supervision_Eng;
+                            _User_Detail_Eng_to_add.PUBLICATION = command.Publication_Eng;
+                            _User_Detail_Eng_to_add.TEACHINGCOURSE = command.TeachingCourse_Eng;
+                            _User_Detail_Eng_to_add.MOREINFO = command.Moreinfo_Eng;
+                            _User_Detail_Eng_to_add.LANGUAGE = "en";
+                            _dbContext.Add(_User_Detail_Eng_to_add);
+                            _dbContext.SaveChanges();
+                        }
 
                         //delete position, title, detail
                         _dbContext.User_List.RemoveRange(_dbContext.User_List.Where(x => x.USERID == command.ID));

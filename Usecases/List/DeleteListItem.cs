@@ -16,6 +16,7 @@ namespace Project.UseCases.ListItem
     public class DeleteListItemCommand : IRequest<DeleteListItemResponse>
     {
         public string? Code { get; set; }
+        public string? Language { get; set; }
         public string? Type { get; set; }
     }
     public class DeleteListItemValidator : AbstractValidator<DeleteListItemCommand>
@@ -44,7 +45,7 @@ namespace Project.UseCases.ListItem
                 {
                     if (command.Type == "position")
                     {
-                        _dbContext.ListPosition.Remove(_dbContext.ListPosition.Find(command.Code));
+                        _dbContext.ListPosition.Remove(_dbContext.ListPosition.Find(command.Code, command.Language));
                         _dbContext.SaveChanges();
                         dbContextTransaction.Commit();
                         return new DeleteListItemResponse
@@ -55,7 +56,7 @@ namespace Project.UseCases.ListItem
                     }
                     else if (command.Type == "title")
                     {
-                        _dbContext.ListTitle.Remove(_dbContext.ListTitle.Find(command.Code));
+                        _dbContext.ListTitle.Remove(_dbContext.ListTitle.Find(command.Code, command.Language));
                         _dbContext.SaveChanges();
                         dbContextTransaction.Commit();
                         return new DeleteListItemResponse
@@ -66,7 +67,7 @@ namespace Project.UseCases.ListItem
                     }
                     else if (command.Type == "department")
                     {
-                        _dbContext.ListDepartment.Remove(_dbContext.ListDepartment.Find(command.Code));
+                        _dbContext.ListDepartment.Remove(_dbContext.ListDepartment.Find(command.Code, command.Language));
                         _dbContext.SaveChanges();
                         dbContextTransaction.Commit();
                         return new DeleteListItemResponse
