@@ -6,8 +6,8 @@ using AutoMapper;
 using Project.UseCases;
 
 namespace ProjectBE.Controllers;
-[Route("upload_banner")]
-public class UploadBannerController : Controller
+[Route("upload_ui")]
+public class UploadUIController : Controller
 {
     private readonly ILogger<UploadController> _logger;
     private readonly IMediator _mediator;
@@ -16,7 +16,7 @@ public class UploadBannerController : Controller
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _accessor;
 
-    public UploadBannerController(ILogger<UploadController> logger, IMediator mediator, IConfiguration configuration, DataContext dbContext, IMapper mapper, IHttpContextAccessor accessor)
+    public UploadUIController(ILogger<UploadController> logger, IMediator mediator, IConfiguration configuration, DataContext dbContext, IMapper mapper, IHttpContextAccessor accessor)
     {
         _logger = logger;
         _mediator = mediator;
@@ -38,28 +38,27 @@ public class UploadBannerController : Controller
                 var firstfolder_name = httpRequest.Form["Folder_Name"][0];
                 var oldfile_name = httpRequest.Form["Old_File"][0];
                 var oldfolder_ex = httpRequest.Form["Old_File_Ex"][0];
-                var od = httpRequest.Form["Ordinal"][0];
 
                 var collectionfile = httpRequest.Form.Files;
                 foreach (IFormFile file in collectionfile)
                 {
-                    var file_name = firstfile_name + "-" + od;
+                    var file_name = firstfile_name;
                     var folder_name = firstfolder_name;
 
                     var uploaded_result = UploadFileFtp(file, file_name, folder_name, oldfile_name, oldfolder_ex);
                     GeneralRepository _generalRepo = new GeneralRepository(_dbContext);
-                    var banner_to_delete = _dbContext.Banner.Where(x => x.TYPE == folder_name && x.FILENAME == oldfile_name).FirstOrDefault();
-                    var iddelete = banner_to_delete.ID;
-                    _dbContext.Banner.Remove(banner_to_delete);
+                    var UI_to_delete = _dbContext.UI.Where(x => x.TYPE == folder_name && x.FILENAME == oldfile_name).FirstOrDefault();
+                    var iddelete = UI_to_delete.ID;
+                    _dbContext.UI.Remove(UI_to_delete);
                     _dbContext.SaveChanges();
 
-                    Project.Models.Banner _files_upload = new Project.Models.Banner();
+                    Project.Models.UI _files_upload = new Project.Models.UI();
                     _files_upload.ID = iddelete;
                     _files_upload.TYPE = firstfolder_name;
                     _files_upload.REALNAME = file.FileName.Substring(0, file.FileName.LastIndexOf("."));
                     _files_upload.FILENAME = file_name;
                     _files_upload.FILEEXTENSION = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
-                    Project.Models.Banner _files_to_add_db = _mapper.Map<Project.Models.Banner>(_files_upload);
+                    Project.Models.UI _files_to_add_db = _mapper.Map<Project.Models.UI>(_files_upload);
                     _dbContext.Add(_files_to_add_db);
                     _dbContext.SaveChanges();
                     dbContextTransaction.Commit();

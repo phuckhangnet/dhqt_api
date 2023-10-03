@@ -25,6 +25,7 @@ namespace Project.UseCases.Article
         public int NoOfResult { get; set; }
         public IEnumerable<int>? MenuID { get; set; } = Enumerable.Empty<int>();
         public string? CurrentRole { get; set; }
+        public int? MenuToGetAr { get; set; }
     }
     public class GetArticleValidator : AbstractValidator<GetArticleCommand>
     {
@@ -62,7 +63,7 @@ namespace Project.UseCases.Article
                         STATUSCODE = HttpStatusCode.InternalServerError
                     };
                 }
-                else if (command.Type != "GET_ALL" && command.Type != "GET_ALL_FROM_USER" && command.Type != "GET_BY_ID" && command.Type != "GET_BY_HASTAG" && command.Type != "GET_BY_MENU_ID" && command.Type != "GET_NO_MENU_ARTICLE" && command.Type != "GET_LIST")
+                else if (command.Type != "GET_ALL" && command.Type != "GET_ALL_FROM_USER" && command.Type != "GET_BY_ID" && command.Type != "GET_BY_HASTAG" && command.Type != "GET_BY_MENU_ID" && command.Type != "GET_NO_MENU_ARTICLE" && command.Type != "GET_LIST" && command.Type != "GET_FROM_MENU" && command.Type != "GET_UI_ARTICLE")
                 {
                     return new GetArticleResponse
                     {
@@ -137,13 +138,21 @@ namespace Project.UseCases.Article
                 else if (command.Type == "GET_NO_MENU_ARTICLE")
                 {
                     var list1 = _dbContext.Articles.Where(x => !_dbContext.Article_Menu.Select(x => x.ARTICLEID).Contains(x.ID)).ToList();
-                    var list2 = _dbContext.Articles.Join(_dbContext.Article_Menu.Where(x => x.MENUID == 0), a => a.ID, b => b.ARTICLEID, (a, b) => new { a }).ToList();
                     return new GetArticleResponse
                     {
                         MESSAGE = "GET_SUCCESSFUL",
                         STATUSCODE = HttpStatusCode.OK,
                         Articlemenu = list1,
-                        Articlelist = list2,
+                    };
+                }
+                else if (command.Type == "GET_UI_ARTICLE")
+                {
+                    var list2 = _dbContext.Articles.Join(_dbContext.Article_Menu.Where(x => x.MENUID == 0), a => a.ID, b => b.ARTICLEID, (a, b) => new { a }).ToList();
+                    return new GetArticleResponse
+                    {
+                        MESSAGE = "GET_SUCCESSFUL",
+                        STATUSCODE = HttpStatusCode.OK,
+                        Articlemenu = list2,
                     };
                 }
                 else
@@ -158,6 +167,7 @@ namespace Project.UseCases.Article
                                 STATUSCODE = HttpStatusCode.InternalServerError
                             };
                         }
+
                         else
                         {
                             var articleQuery = await _dbContext.Articles.Select(x => new { x.ID, x.TITLE, x.SUMMARY, x.AVATAR, x.HASTAG, x.LANGUAGE, x.STATUS, x.PRIORITYLEVEL, x.LINKED, x.LATESTEDITDATE, x.IDUSERCREATE, x.IDUSEREDIT, x.CREATEDATE }).ToListAsync(cancellationToken);
@@ -167,7 +177,23 @@ namespace Project.UseCases.Article
                                 STATUSCODE = HttpStatusCode.OK,
                                 Articlemenu = articleQuery,
                             };
+                            // if (command.Type == "GET_FROM_MENU")
+                            // {
+                            //     var articleQuery = from arc in _dbContext.Articles.ToList()
+                            //                        join arcme in _dbContext.Article_Menu on arc.ID equals arcme.ARTICLEID
+                            //                        where arcme.MENUID == command.MenuToGetAr
+                            //                        orderby arc.CREATEDATE descending
+                            //                        select new { arc.ID, arc.TITLE };
+
+                            //     return new GetArticleResponse
+                            //     {
+                            //         MESSAGE = "GET_SUCCESSFUL",
+                            //         STATUSCODE = HttpStatusCode.OK,
+                            //         Articlemenu = articleQuery,
+                            //     };
+                            // }
                         }
+
                     }
                     else
                     {
@@ -215,52 +241,6 @@ namespace Project.UseCases.Article
                             case "GET_BY_ID":
                                 result = await _dbContext.Articles.Where(x => command.Data.Contains(x.ID.ToString())).ToListAsync(cancellationToken);
                                 break;
-                                // case "GET_BY_MENU_ID":
-                                //     foreach (string _data in command.Data)
-                                //     {
-                                //         var listItem = _data.Split(",");
-                                //         list_Article_Menu_response = (from a in _dbContext.Article_Menu.AsEnumerable()
-                                //                                       where checkArray(listItem, a.MENUID.Split(",")) == true
-                                //                                       select a);
-                                //         foreach (var _response in list_Article_Menu_response.ToList())
-                                //         {
-                                //             //result = await _dbContext.Articles.Where(x => x.ID == _response.ARTICLEID).ToListAsync(cancellationToken);
-                                //             result = result.Concat(await _dbContext.Articles.Where(x => x.ID == _response.ARTICLEID).ToListAsync(cancellationToken)).Distinct();
-                                //         }
-                                //         // if (listItem.Length == 1)
-                                //         // {
-                                //         //     list_Article_Menu_response = await _dbContext.Article_Menu.Where(x => x.MENUID.ToString() == listItem[0]).ToListAsync(cancellationToken);
-                                //         //     foreach (Project.Models.Article_Menu response in list_Article_Menu_response)
-                                //         //     {
-                                //         //         list_Article_response = await _dbContext.Articles.Where(x => x.ID == response.ARTICLEID).ToListAsync(cancellationToken);
-                                //         //         result = result.Concat((from t in list_Article_response
-                                //         //                                 orderby t.CREATEDATE
-                                //         //                                 select t).Take(command.NoOfResult));
-                                //         //     }
-                                //         // }
-                                //         // else
-                                //         // {
-                                //         //     list_Article_Menu_response = await _dbContext.Article_Menu.Where(x => x.MENUID.ToString() == listItem[0]).ToListAsync(cancellationToken);
-                                //         //     foreach (Project.Models.Article_Menu response in list_Article_Menu_response)
-                                //         //     {
-                                //         //         for (int i = 1; i < listItem.Length; i++)
-                                //         //         {
-                                //         //             var list_Article_Menu_response_ = await _dbContext.Article_Menu.Where(x => x.MENUID.ToString() == listItem[i] && x.ARTICLEID == response.ARTICLEID).ToListAsync(cancellationToken);
-                                //         //             if (list_Article_Menu_response_.Count() == 0)
-                                //         //             {
-                                //         //                 break;
-                                //         //             }
-                                //         //             list_Article_response = await _dbContext.Articles.Where(x => x.ID == response.ARTICLEID).ToListAsync(cancellationToken);
-                                //         //             result = result.Concat((from t in list_Article_response
-                                //         //                                     orderby t.CREATEDATE
-                                //         //                                     select t).Take(command.NoOfResult));
-                                //         //         }
-
-                                //         //     }
-                                //         // }
-                                //     }
-                                //     result = result.Take(command.NoOfResult);
-                                //     break;
                         }
                     }
                     return new GetArticleResponse

@@ -26,6 +26,7 @@ namespace Project.Data
         public DbSet<Project.Models.Upload_Files_Warehouse> Upload_Files_Warehouse { get; set; }
         public DbSet<Project.Models.Article_Link> Article_Link { get; set; }
         public DbSet<Project.Models.Banner> Banner { get; set; }
+        public DbSet<Project.Models.UI> UI { get; set; }
 
 
 
@@ -51,6 +52,7 @@ namespace Project.Data
             modelBuilder.Entity<Project.Models.Upload_Files_Warehouse>().Property(f => f.ID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Project.Models.Article_Link>().HasKey(m => new { m.SOURCEARTICLE, m.LINKARTICLE });
             modelBuilder.Entity<Project.Models.Banner>().HasKey(m => new { m.ID, m.TYPE });
+            modelBuilder.Entity<Project.Models.UI>().HasKey(m => new { m.ID, m.TYPE });
         }
 
 
