@@ -20,7 +20,7 @@ namespace Project.UseCases.Menu
         public string? Description { get; set; }
         public int MenuLevel { get; set; }
         public string? Parent { get; set; }
-        //public Int16? Position { get; set; }
+        public Int16? Position { get; set; }
         public Byte? Visible { get; set; }
         public Byte? IsActive { get; set; }
         public Byte? IsPage { get; set; }
