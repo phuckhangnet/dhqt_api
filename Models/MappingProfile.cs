@@ -184,6 +184,7 @@ namespace Project.Models
             .ForMember(des => des.DESCRIPTION, act => { act.Condition(src => src.Description != null); act.MapFrom(src => src.Description); })
             .ForMember(des => des.MENULEVEL, act => { act.Condition(src => src.MenuLevel != null); act.MapFrom(src => src.MenuLevel); })
             .ForMember(des => des.PARENT, act => { act.Condition(src => src.Parent != null); act.MapFrom(src => src.Parent); })
+            .ForMember(des => des.POSITION, act => { act.Condition(src => src.Parent != null); act.MapFrom(src => src.Position); })
             .ForMember(des => des.VISIBLE, act => { act.Condition(src => src.Visible != null); act.MapFrom(src => src.Visible); })
             .ForMember(des => des.ISACTIVE, act => { act.Condition(src => src.IsActive != null); act.MapFrom(src => src.IsActive); })
             .ForMember(des => des.ISPAGE, act => { act.Condition(src => src.IsPage != null); act.MapFrom(src => src.IsPage); })

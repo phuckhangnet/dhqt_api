@@ -55,7 +55,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAnyCorsPolicy", builder =>
                        .AllowAnyHeader();
             }));
 
-if (builder.Environment.IsDevelopment())
+//if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<DataContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("IU_BT_DB")));

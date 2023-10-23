@@ -4,6 +4,10 @@ using Project.Data;
 using Newtonsoft.Json.Linq;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using ProjectBE.Models;
+using InfluxDB3.Client;
+using InfluxDB3.Client.Write;
+using System.Diagnostics;
 
 namespace ProjectBE.Controllers;
 [Route("store")]
@@ -23,12 +27,13 @@ public class StoreController : Controller
     }
 
     [HttpPost("StoredProcedure")]
-    public dynamic getListForUI([FromBody] dynamic request)
+    public async Task<dynamic> getListForUI([FromBody] dynamic request)
     {
         var parameters = JObject.Parse(request.ToString());
 
         try
         {
+            var time = DateTime.UtcNow;
             var result = new List<Dictionary<string, dynamic>>();
             using (SqlConnection con = new SqlConnection(this._configuration.GetSection("ConnectionStrings")["IU_BT_DB"]))
             {
@@ -52,6 +57,35 @@ public class StoreController : Controller
                     }
                 }
             }
+
+            try
+            {
+                if (_configuration.GetValue<bool>("Logging:Allow"))
+                {
+                    var hostUrl = InfluxDBModel.hostUrl;
+
+                    using var client = new InfluxDBClient(hostUrl, token: InfluxDBModel.token);
+
+                    const string database = "hcmiu";
+
+                    var points = new PointData[]
+                    {
+                        PointData.Measurement("Store")
+                        .SetField("Query", (DateTime.UtcNow - time).TotalSeconds),
+                    
+
+                    };
+
+                    await client.WritePointsAsync(points: points, database: database);
+                }
+
+                
+
+
+            }
+            catch { }
+
+
             return Ok(new
             {
                 message = "success",
