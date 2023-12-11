@@ -26,7 +26,7 @@ namespace Project.Data
         public DbSet<Project.Models.Upload_Files_Warehouse> Upload_Files_Warehouse { get; set; }
         public DbSet<Project.Models.Article_Link> Article_Link { get; set; }
         public DbSet<Project.Models.Banner> Banner { get; set; }
-
+        public DbSet<Project.Models.UI> UI { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
