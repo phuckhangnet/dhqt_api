@@ -42,6 +42,14 @@ public class MenuController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
+    [HttpPost("get-webpage")]
+    //[AuthorizeAttribute]
+    //[DecryptedAttribute]
+    public async Task<IActionResult> GetPageByMenu([FromBody] GetPageByMenuCommand command, [FromServices] IMediator mediator)
+    {
+        var result = await mediator.Send(command);
+        return StatusCode((int)result.STATUSCODE, result);
+    }
 
     [HttpGet("getall")]
     [AuthorizeAttribute]
