@@ -93,7 +93,7 @@ namespace Project.UseCases.Article
                                   join arcme in Article_Menu on arc.ID equals arcme.ARTICLEID
                                   join urs in _dbContext.Users.ToList() on arc.IDUSERCREATE equals urs.ID
                                   orderby arc.CREATEDATE descending
-                                  select new { arc = new { arc.ID, arc.TITLE, arc.SUMMARY, arc.AVATAR, arc.HASTAG, arc.LANGUAGE, arc.STATUS, arc.PRIORITYLEVEL, arc.LINKED, arc.LATESTEDITDATE, arc.IDUSERCREATE, arc.IDUSEREDIT, arc.CREATEDATE }, arcme.MENUID, arcme.MENUNAME, urs.USERNAME };
+                                  select new { arc = new { arc.ID, arc.TITLE, arc.SUMMARY, arc.AVATAR, arc.HASTAG, arc.LANGUAGE, arc.STATUS, arc.PRIORITYLEVEL, arc.LINKED, arc.LATESTEDITDATE, arc.IDUSERCREATE, arc.IDUSEREDIT, arc.CREATEDATE, arc.SLUG, arc.PAGE }, arcme.MENUID, arcme.MENUNAME, urs.USERNAME };
                     return new GetArticleResponse
                     {
                         MESSAGE = "GET_SUCCESSFUL",
@@ -160,7 +160,7 @@ namespace Project.UseCases.Article
                         }
                         else
                         {
-                            var articleQuery = await _dbContext.Articles.Select(x => new { x.ID, x.TITLE, x.SUMMARY, x.AVATAR, x.HASTAG, x.LANGUAGE, x.STATUS, x.PRIORITYLEVEL, x.LINKED, x.LATESTEDITDATE, x.IDUSERCREATE, x.IDUSEREDIT, x.CREATEDATE }).ToListAsync(cancellationToken);
+                            var articleQuery = await _dbContext.Articles.Select(x => new { x.ID, x.TITLE, x.SUMMARY, x.AVATAR, x.HASTAG, x.LANGUAGE, x.STATUS, x.PRIORITYLEVEL, x.LINKED, x.LATESTEDITDATE, x.IDUSERCREATE, x.IDUSEREDIT, x.CREATEDATE, x.SLUG, x.PAGE }).ToListAsync(cancellationToken);
                             return new GetArticleResponse
                             {
                                 MESSAGE = "GET_SUCCESSFUL",

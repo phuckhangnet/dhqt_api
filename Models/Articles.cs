@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Net.Http.Headers;
 
 namespace Project.Models
 {
@@ -22,5 +23,7 @@ namespace Project.Models
         public int IDUSEREDIT { get; set; }
         public int? LINKED { get; set; }
         public string? STATUS { get; set; }
+        public string? SLUG { get; set; }
+        public string? PAGE { get; set; }
     }
 }

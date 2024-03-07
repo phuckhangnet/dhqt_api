@@ -23,6 +23,8 @@ namespace Project.UseCases.Article
         public IEnumerable<int>? Menu { get; set; }
         public string? Language { get; set; }
         public string? ArticleContent { get; set; }
+        public string? Slug { get; set; }
+        public string? Page { get; set; }
     }
     public class AddDraftArticleValidator : AbstractValidator<AddDraftArticleCommand>
     {
