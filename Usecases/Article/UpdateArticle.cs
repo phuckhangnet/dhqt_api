@@ -25,6 +25,8 @@ namespace Project.UseCases.Article
         public IEnumerable<int>? Menu { get; set; }
         public string? Language { get; set; }
         public string? Article_Content { get; set; }
+        public string? Slug { get; set; }
+        public string? Page { get; set; }
     }
     public class UpdateArticleValidator : AbstractValidator<UpdateArticleCommand>
     {

@@ -105,6 +105,8 @@ namespace Project.Models
             .ForMember(des => des.HASTAG, act => { act.Condition(src => src.Hastag != null); act.MapFrom(src => src.Hastag); })
             .ForMember(des => des.LANGUAGE, act => { act.Condition(src => src.Language != null); act.MapFrom(src => src.Language); })
             .ForMember(des => des.ARTICLECONTENT, act => { act.Condition(src => src.Article_Content != null); act.MapFrom(src => src.Article_Content); })
+            .ForMember(des => des.SLUG, act => { act.Condition(src => src.Slug != null); act.MapFrom(src => src.Slug); })
+            .ForMember(des => des.PAGE, act => { act.Condition(src => src.Page != null); act.MapFrom(src => src.Page); })
             .ForAllOtherMembers(opts => opts.Ignore());
         }
     }

@@ -19,5 +19,7 @@ namespace Project.Models.Dto
         public int IDUSERCREATE { get; set; }
         public int IDUSEREDIT { get; set; }
         public int? LINKED { get; set; }
+        public string? SLUG { get; set; }
+         public string? PAGE { get; set; }
     }
 }
