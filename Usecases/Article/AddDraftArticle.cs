@@ -58,33 +58,50 @@ namespace Project.UseCases.Article
                 {
                     var iduser = _accessor.HttpContext?.Items["ID"]?.ToString();
                     GeneralRepository _generalRepo = new GeneralRepository(_dbContext);
-                    Project.Models.Articles _Article_to_add = _mapper.Map<Project.Models.Articles>(command);
-                    Project.Models.Article_Menu _Article_Menu_to_add = new Project.Models.Article_Menu();
-                    _Article_to_add.CREATEDATE = DateTime.Now;
-                    _Article_to_add.LATESTEDITDATE = DateTime.Now;
-                    _Article_to_add.PRIORITYLEVEL = 1;
-                    _Article_to_add.IDUSERCREATE = Int32.Parse(iduser);
-                    _Article_to_add.STATUS = "DRAFT";
-                    _dbContext.Add(_Article_to_add);
-                    _dbContext.SaveChanges();
-                    _dbContext.Entry(_Article_to_add).GetDatabaseValues();
-                    var id = _Article_to_add.ID;
-                    foreach (int menuID in command.Menu)
-                    {
-                        _Article_Menu_to_add.MENUID = menuID;
-                        _Article_Menu_to_add.ARTICLEID = id;
-                        _dbContext.Add(_Article_Menu_to_add);
-                        _dbContext.SaveChanges();
+                    bool _slug_checked = _dbContext.Articles.Any(u => u.SLUG == command.Slug);
 
+                    List<string> _existed_prop = new List<string> { _slug_checked ? "SLUG_ALREADY_EXISTS" : string.Empty };
+                    _existed_prop.RemoveAll(s => s == string.Empty);
+                    if (_existed_prop.Count() > 0)
+                    {
+                        return new AddDraftArticleResponse
+                        {
+                            MESSAGE = "ADD_FAIL",
+                            STATUSCODE = HttpStatusCode.InternalServerError,
+                            ERROR = _existed_prop
+                        };
+                    }
+                    else
+                    {
+                        Project.Models.Articles _Article_to_add = _mapper.Map<Project.Models.Articles>(command);
+                        Project.Models.Article_Menu _Article_Menu_to_add = new Project.Models.Article_Menu();
+                        _Article_to_add.CREATEDATE = DateTime.Now;
+                        _Article_to_add.LATESTEDITDATE = DateTime.Now;
+                        _Article_to_add.PRIORITYLEVEL = 1;
+                        _Article_to_add.IDUSERCREATE = Int32.Parse(iduser);
+                        _Article_to_add.STATUS = "DRAFT";
+                        _dbContext.Add(_Article_to_add);
+                        _dbContext.SaveChanges();
+                        _dbContext.Entry(_Article_to_add).GetDatabaseValues();
+                        var id = _Article_to_add.ID;
+                        foreach (int menuID in command.Menu)
+                        {
+                            _Article_Menu_to_add.MENUID = menuID;
+                            _Article_Menu_to_add.ARTICLEID = id;
+                            _dbContext.Add(_Article_Menu_to_add);
+                            _dbContext.SaveChanges();
+
+                        }
+
+                        dbContextTransaction.Commit();
+                        return new AddDraftArticleResponse
+                        {
+                            MESSAGE = "ADD_SUCCESSFUL",
+                            STATUSCODE = HttpStatusCode.OK,
+                            RESPONSES = _mapper.Map<ArticleDto>(_Article_to_add)
+                        };
                     }
 
-                    dbContextTransaction.Commit();
-                    return new AddDraftArticleResponse
-                    {
-                        MESSAGE = "ADD_SUCCESSFUL",
-                        STATUSCODE = HttpStatusCode.OK,
-                        RESPONSES = _mapper.Map<ArticleDto>(_Article_to_add)
-                    };
                 }
                 catch
                 {

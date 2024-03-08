@@ -14,6 +14,7 @@ namespace Project.UseCases.Article
         public string? MESSAGE { get; set; }
         public HttpStatusCode STATUSCODE { get; set; }
         public ArticleDto? RESPONSES { get; set; }
+        public dynamic? ERROR { get; set; }
     }
     public class UpdateArticleCommand : IRequest<UpdateArticleResponse>
     {
@@ -54,43 +55,62 @@ namespace Project.UseCases.Article
                 try
                 {
                     var iduser = _accessor.HttpContext?.Items["ID"]?.ToString();
-                    Project.Models.Articles? _Article_to_update = await _dbContext.Articles.AsNoTracking().FirstOrDefaultAsync(x => x.ID == command.ID, cancellationToken);
-                    if (_Article_to_update != null)
+                    GeneralRepository _generalRepo = new GeneralRepository(_dbContext);
+                    bool _slug_checked = _dbContext.Articles.Any(u => u.SLUG == command.Slug);
+                    Project.Models.Articles _article_check = _dbContext.Articles.AsNoTracking().FirstOrDefault(x => x.SLUG == command.Slug);
+
+                    List<string> _existed_prop = new List<string> { _slug_checked ? "SLUG_ALREADY_EXISTS" : string.Empty };
+                    _existed_prop.RemoveAll(s => s == string.Empty);
+                    if (_existed_prop.Count() > 0 && _article_check.ID != command.ID)
                     {
-                        _mapper.Map<UpdateArticleCommand, Project.Models.Articles>(command, _Article_to_update);
-                        _Article_to_update.LATESTEDITDATE = DateTime.Now;
-                        _Article_to_update.IDUSEREDIT = Int32.Parse(iduser);
-                        _dbContext.Articles.Update(_Article_to_update);
-                        _dbContext.SaveChanges();
-                        
-                        _dbContext.Article_Menu.RemoveRange(_dbContext.Article_Menu.Where(x => x.ARTICLEID == command.ID));
-                        _dbContext.SaveChanges();
-
-                        Project.Models.Article_Menu _Article_Menu_to_add = new Project.Models.Article_Menu();
-                        foreach (var menu in command.Menu)
-                        {
-                            _Article_Menu_to_add.MENUID = menu;
-                            _Article_Menu_to_add.ARTICLEID = command.ID;
-                            await _dbContext.Article_Menu.AddAsync(_Article_Menu_to_add);
-                            _dbContext.SaveChanges();
-                        }
-
-                        dbContextTransaction.Commit();
                         return new UpdateArticleResponse
                         {
-                            MESSAGE = "UPDATE_SUCCESSFUL",
-                            STATUSCODE = HttpStatusCode.OK,
-                            RESPONSES = _mapper.Map<ArticleDto>(_Article_to_update)
+                            MESSAGE = "ADD_FAIL",
+                            STATUSCODE = HttpStatusCode.InternalServerError,
+                            ERROR = _existed_prop
                         };
                     }
                     else
                     {
-                        return new UpdateArticleResponse
+                        Project.Models.Articles? _Article_to_update = await _dbContext.Articles.AsNoTracking().FirstOrDefaultAsync(x => x.ID == command.ID, cancellationToken);
+                        if (_Article_to_update != null)
                         {
-                            MESSAGE = "UPDATE_FAIL",
-                            STATUSCODE = HttpStatusCode.BadRequest
-                        };
+                            _mapper.Map<UpdateArticleCommand, Project.Models.Articles>(command, _Article_to_update);
+                            _Article_to_update.LATESTEDITDATE = DateTime.Now;
+                            _Article_to_update.IDUSEREDIT = Int32.Parse(iduser);
+                            _dbContext.Articles.Update(_Article_to_update);
+                            _dbContext.SaveChanges();
+
+                            _dbContext.Article_Menu.RemoveRange(_dbContext.Article_Menu.Where(x => x.ARTICLEID == command.ID));
+                            _dbContext.SaveChanges();
+
+                            Project.Models.Article_Menu _Article_Menu_to_add = new Project.Models.Article_Menu();
+                            foreach (var menu in command.Menu)
+                            {
+                                _Article_Menu_to_add.MENUID = menu;
+                                _Article_Menu_to_add.ARTICLEID = command.ID;
+                                await _dbContext.Article_Menu.AddAsync(_Article_Menu_to_add);
+                                _dbContext.SaveChanges();
+                            }
+
+                            dbContextTransaction.Commit();
+                            return new UpdateArticleResponse
+                            {
+                                MESSAGE = "UPDATE_SUCCESSFUL",
+                                STATUSCODE = HttpStatusCode.OK,
+                                RESPONSES = _mapper.Map<ArticleDto>(_Article_to_update)
+                            };
+                        }
+                        else
+                        {
+                            return new UpdateArticleResponse
+                            {
+                                MESSAGE = "UPDATE_FAIL",
+                                STATUSCODE = HttpStatusCode.BadRequest
+                            };
+                        }
                     }
+
                 }
                 catch
                 {
