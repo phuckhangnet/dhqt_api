@@ -65,7 +65,7 @@ namespace Project.UseCases.Article
                     {
                         return new UpdateArticleResponse
                         {
-                            MESSAGE = "ADD_FAIL",
+                            MESSAGE = "UPDATE_FAIL",
                             STATUSCODE = HttpStatusCode.InternalServerError,
                             ERROR = _existed_prop
                         };
