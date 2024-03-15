@@ -110,7 +110,6 @@ namespace Project.UseCases.Article
                             };
                         }
                     }
-
                 }
                 catch
                 {

@@ -190,6 +190,7 @@ namespace Project.Models
             .ForMember(des => des.VISIBLE, act => { act.Condition(src => src.Visible != null); act.MapFrom(src => src.Visible); })
             .ForMember(des => des.ISACTIVE, act => { act.Condition(src => src.IsActive != null); act.MapFrom(src => src.IsActive); })
             .ForMember(des => des.ISPAGE, act => { act.Condition(src => src.IsPage != null); act.MapFrom(src => src.IsPage); })
+            .ForMember(des => des.SLUG, act => { act.Condition(src => src.Slug != null); act.MapFrom(src => src.Slug); })
             .ForAllOtherMembers(opts => opts.Ignore());
         }
     }

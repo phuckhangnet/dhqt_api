@@ -24,6 +24,7 @@ namespace Project.UseCases.Menu
         public Byte? IsActive { get; set; }
         public Byte? IsPage { get; set; }
         public IEnumerable<string?>? Role { get; set; }
+        public string? Slug { get; set; }
     }
     public class AddMenuValidator : AbstractValidator<AddMenuCommand>
     {
@@ -51,30 +52,45 @@ namespace Project.UseCases.Menu
                 try
                 {
                     GeneralRepository _generalRepo = new GeneralRepository(_dbContext);
+                    bool _slug_checked = _dbContext.Menu.Any(u => u.SLUG == command.Slug);
 
-                    Project.Models.Menu _Menu_to_add = _mapper.Map<Project.Models.Menu>(command);
-                    Project.Models.Role_Menu _Role_Menu = _mapper.Map<Project.Models.Role_Menu>(command);
-                    await _dbContext.AddAsync(_Menu_to_add, cancellationToken);
-                    await _dbContext.SaveChangesAsync(cancellationToken);
-                    _dbContext.Entry(_Menu_to_add).GetDatabaseValues();
-
-                    _Role_Menu.MENUID = _Menu_to_add.ID;
-                    foreach (string _role in command.Role)
+                    List<string> _existed_prop = new List<string> { _slug_checked ? "SLUG_ALREADY_EXISTS" : string.Empty };
+                    _existed_prop.RemoveAll(s => s == string.Empty);
+                    if (_existed_prop.Count() > 0)
                     {
-                        _Role_Menu.MENUID = _Menu_to_add.ID;
-                        _Role_Menu.ROLECODE = _role;
-                        _dbContext.Add(_Role_Menu);
-                        _dbContext.SaveChanges();
+                        return new AddMenuResponse
+                        {
+                            MESSAGE = "ADD_FAIL",
+                            STATUSCODE = HttpStatusCode.InternalServerError,
+                            ERROR = _existed_prop
+                        };
                     }
-
-                    dbContextTransaction.Commit();
-
-                    return new AddMenuResponse
+                    else
                     {
-                        MESSAGE = "ADD_SUCCESSFUL",
-                        STATUSCODE = HttpStatusCode.OK,
-                        RESPONSES = _Menu_to_add
-                    };
+                        Project.Models.Menu _Menu_to_add = _mapper.Map<Project.Models.Menu>(command);
+                        Project.Models.Role_Menu _Role_Menu = _mapper.Map<Project.Models.Role_Menu>(command);
+                        await _dbContext.AddAsync(_Menu_to_add, cancellationToken);
+                        await _dbContext.SaveChangesAsync(cancellationToken);
+                        _dbContext.Entry(_Menu_to_add).GetDatabaseValues();
+
+                        _Role_Menu.MENUID = _Menu_to_add.ID;
+                        foreach (string _role in command.Role)
+                        {
+                            _Role_Menu.MENUID = _Menu_to_add.ID;
+                            _Role_Menu.ROLECODE = _role;
+                            _dbContext.Add(_Role_Menu);
+                            _dbContext.SaveChanges();
+                        }
+
+                        dbContextTransaction.Commit();
+
+                        return new AddMenuResponse
+                        {
+                            MESSAGE = "ADD_SUCCESSFUL",
+                            STATUSCODE = HttpStatusCode.OK,
+                            RESPONSES = _Menu_to_add
+                        };
+                    }
                 }
                 catch
                 {

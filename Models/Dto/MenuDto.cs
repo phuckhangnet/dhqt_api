@@ -11,5 +11,6 @@ namespace Project.Models.Dto
         public Byte IsActive { get; set; }
         public Byte IsPage { get; set; }
         public Byte VISIBLE { get; set; }
+        public string? SLUG { get; set; } 
     }
 }

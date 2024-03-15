@@ -51,16 +51,17 @@ public class ArticleController : Controller
         var result = await mediator.Send(command);
         return StatusCode((int)result.STATUSCODE, result);
     }
-   
+
 
     [HttpPost("query")]
     public async Task<IActionResult> GetListArticle([FromBody] GetArticleCommand command, [FromServices] IMediator mediator)
     {
-        
+
         var time = DateTime.UtcNow;
         var result = await mediator.Send(command);
 
-        try {
+        try
+        {
 
             if (_config.GetValue<bool>("Logging:Allow"))
             {
@@ -80,16 +81,16 @@ public class ArticleController : Controller
 
                 await client.WritePointsAsync(points: points, database: database);
             }
-           
 
 
 
 
-            
+
+
 
         }
         catch { }
-        
+
 
         return StatusCode((int)result.STATUSCODE, result);
     }
@@ -159,7 +160,7 @@ public class ArticleController : Controller
         {
             string sQuery = ""
             + " SELECT a.ID, a.TITLE, a.SUMMARY, a.HASTAG, a.AVATAR, a.PRIORITYLEVEL, a.LANGUAGE, a.CREATEDATE, a.LATESTEDITDATE, a.IDUSERCREATE, a.IDUSEREDIT, a.LINKED, a.STATUS  "
-            + "        , m.NAME MENUNAME, CASE WHEN m.ISPAGE = 1 AND m.ISACTIVE = 1 THEN 'PAGE' WHEN m.ISPAGE = 0 AND m.ISACTIVE = 1 THEN 'ARTICLE' ELSE '' END TYPEMENU " 
+            + "        , m.NAME MENUNAME, CASE WHEN m.ISPAGE = 1 AND m.ISACTIVE = 1 THEN 'PAGE' WHEN m.ISPAGE = 0 AND m.ISACTIVE = 1 THEN 'ARTICLE' ELSE '' END TYPEMENU "
             + " FROM Articles a LEFT JOIN Article_Menu am ON am.ARTICLEID = a.ID LEFT JOIN Menu m ON m.Id = am.MENUID"
             + "        ORDER BY a.LATESTEDITDATE DESC ";
             conn.Open();
@@ -167,7 +168,7 @@ public class ArticleController : Controller
             return result;
         }
 
-    } 
+    }
 
 
     [HttpGet("getusage")]
@@ -178,12 +179,10 @@ public class ArticleController : Controller
         var process = Process.GetCurrentProcess();
         var cpuUsage = process.TotalProcessorTime;
         var ramUsage = process.PrivateMemorySize64;
-            var hostName = Environment.MachineName;
-            var domainName = Environment.UserDomainName;
+        var hostName = Environment.MachineName;
+        var domainName = Environment.UserDomainName;
 
-        var result = new {hostName, domainName, cpuUsage, ramUsage};
+        var result = new { hostName, domainName, cpuUsage, ramUsage };
         return result;
-    } 
-
-
+    }
 }
