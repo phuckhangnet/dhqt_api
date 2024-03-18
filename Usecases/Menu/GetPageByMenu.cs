@@ -46,6 +46,30 @@ namespace Project.UseCases.Menu
                 {
                     page = "";
                 }
+                else if (menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6, menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6).IndexOf("\"")) == "biotechnology")
+                {
+                    page = "biotechnology";
+                }
+                else if (menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6, menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6).IndexOf("\"")) == "food-technology")
+                {
+                    page = "food-technology";
+                }
+                else if (menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6, menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6).IndexOf("\"")) == "applied-chemistry")
+                {
+                    page = "applied-chemistry";
+                }
+                else if (menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6, menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6).IndexOf("\"")) == "aquascience")
+                {
+                    page = "aquascience";
+                }
+                else if (menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6, menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6).IndexOf("\"")) == "alumni")
+                {
+                    page = "alumni";
+                }
+                else if (menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6, menu.DESCRIPTION.Substring(menu.DESCRIPTION.IndexOf("relg=") + 6).IndexOf("\"")) == "admission")
+                {
+                    page = "admission";
+                }
                 else
                 {
                     var result = await _dbContext.Menu.Where(x => x.ID == Int32.Parse(menu.PARENT)).FirstOrDefaultAsync(cancellationToken);
