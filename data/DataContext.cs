@@ -32,6 +32,7 @@ namespace Project.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultSchema("bndhqt");
             modelBuilder.Entity<Project.Models.User>().Property(f => f.ID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Project.Models.UserDetail>().HasKey(m => new { m.USERID, m.LANGUAGE });
             modelBuilder.Entity<Project.Models.UserList>().HasKey(m => new { m.USERID, m.TABLELIST, m.LISTCODE }); ;

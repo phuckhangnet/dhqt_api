@@ -10,6 +10,7 @@ using System.Text;
 using Project.UseCases;
 using Project.UseCases.Tokens;
 using Project.RSA;
+using Project.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,9 +49,12 @@ builder.Services.AddAuthentication("Bearer")
             };
         });
 
+var corsSettings = new CorsSettings();
+builder.Configuration.GetSection("CorsSettings").Bind(corsSettings);
+
 builder.Services.AddCors(o => o.AddPolicy("AllowAnyCorsPolicy", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder.WithOrigins(corsSettings.AllowedOrigins)
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
@@ -68,10 +72,10 @@ if (!app.Environment.IsDevelopment())
 {
     // app.UseDeveloperExceptionPage();
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    //app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("AllowAnyCorsPolicy");
