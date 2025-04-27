@@ -26,6 +26,12 @@ public class StoreController : Controller
         _configuration = configuration;
     }
 
+    [HttpGet("check")]
+    public async Task<dynamic> check()
+
+    {
+        return DateTime.Now;
+    }
     [HttpPost("StoredProcedure")]
     public async Task<dynamic> getListForUI([FromBody] dynamic request)
     {

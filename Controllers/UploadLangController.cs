@@ -15,8 +15,9 @@ public class UploadLangController : Controller
     private readonly DataContext _dbContext;
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _accessor;
-
-    public UploadLangController(ILogger<UploadController> logger, IMediator mediator, IConfiguration configuration, DataContext dbContext, IMapper mapper, IHttpContextAccessor accessor)
+    private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+    public UploadLangController(ILogger<UploadController> logger, IMediator mediator, IConfiguration configuration, DataContext dbContext, IMapper mapper, IHttpContextAccessor accessor
+        , Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
     {
         _logger = logger;
         _mediator = mediator;
@@ -24,6 +25,7 @@ public class UploadLangController : Controller
         _dbContext = dbContext;
         _mapper = mapper;
         _accessor = accessor;
+        _hostingEnvironment = hostingEnvironment;
     }
     [HttpPost("verify_upload")]
     public async Task<List<string>> UploadFile()
@@ -52,33 +54,46 @@ public class UploadLangController : Controller
             return new List<string>();
         }
     }
+
     private string UploadFileFtp(IFormFile file, string filename)
     {
         var urlfile = this._configuration.GetSection("FtpStorageConnection")["url"];
-        var ftpUsername = this._configuration.GetSection("FtpStorageConnection")["user"];
-        var ftpPassword = this._configuration.GetSection("FtpStorageConnection")["pass"];
+        var ftpUsername = this._configuration.GetSection("FtpImagesConnection")["user"];
+        var ftpPassword = this._configuration.GetSection("FtpImagesConnection")["pass"];
         //
         try
         {
             if (file != null)
             {
-                var uri = urlfile + "Language/" + filename;
-                var request = (FtpWebRequest)WebRequest.Create(uri);
-                request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
-                request.Method = WebRequestMethods.Ftp.DeleteFile;
-                request.Method = WebRequestMethods.Ftp.UploadFile;
-                request.UseBinary = true;
-                using (var ms = new MemoryStream())
+                filename += file.FileName.Substring(file.FileName.LastIndexOf("."));
+                var path = Path.Combine(_hostingEnvironment.WebRootPath, urlfile + "/Language/");
+
+                var uri = Path.Combine(path, filename);
+                //var uri = urlfile + "Language/" + filename;
+
+                //var uri = urlfile + filename;
+                //var request = (FtpWebRequest)WebRequest.Create(uri);
+                //request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
+                //request.Method = WebRequestMethods.Ftp.UploadFile;
+                //request.UseBinary = true;
+                //using (var ms = new MemoryStream())
+                //{
+                //    file.CopyTo(ms);
+                //    var buffer = ms.ToArray();
+                //    Stream requestStream = request.GetRequestStream();
+                //    requestStream.Write(buffer, 0, buffer.Length);
+                //    requestStream.Close();
+                //    // act on the Base64 data
+                //}
+                //FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                //response.Close();
+
+                using (var fileStream = System.IO.File.Create(uri))
                 {
-                    file.CopyTo(ms);
-                    var buffer = ms.ToArray();
-                    Stream requestStream = request.GetRequestStream();
-                    requestStream.Write(buffer, 0, buffer.Length);
-                    requestStream.Close();
-                    // act on the Base64 data
+                    file.CopyTo(fileStream);
+
                 }
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-                response.Close();
+
 
                 return filename;
             }
@@ -87,4 +102,39 @@ public class UploadLangController : Controller
         }
         catch (Exception ex) { return "err: " + ex.Message; }
     }
+    //private string UploadFileFtp(IFormFile file, string filename)
+    //{
+    //    var urlfile = this._configuration.GetSection("FtpStorageConnection")["url"];
+    //    var ftpUsername = this._configuration.GetSection("FtpStorageConnection")["user"];
+    //    var ftpPassword = this._configuration.GetSection("FtpStorageConnection")["pass"];
+    //    //
+    //    try
+    //    {
+    //        if (file != null)
+    //        {
+    //            var uri = urlfile + "Language/" + filename;
+    //            var request = (FtpWebRequest)WebRequest.Create(uri);
+    //            request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
+    //            request.Method = WebRequestMethods.Ftp.DeleteFile;
+    //            request.Method = WebRequestMethods.Ftp.UploadFile;
+    //            request.UseBinary = true;
+    //            using (var ms = new MemoryStream())
+    //            {
+    //                file.CopyTo(ms);
+    //                var buffer = ms.ToArray();
+    //                Stream requestStream = request.GetRequestStream();
+    //                requestStream.Write(buffer, 0, buffer.Length);
+    //                requestStream.Close();
+    //                // act on the Base64 data
+    //            }
+    //            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+    //            response.Close();
+
+    //            return filename;
+    //        }
+    //        else
+    //            return "";
+    //    }
+    //    catch (Exception ex) { return "err: " + ex.Message; }
+    //}
 }

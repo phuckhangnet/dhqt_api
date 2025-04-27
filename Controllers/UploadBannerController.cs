@@ -4,6 +4,7 @@ using System.Net;
 using Project.Data;
 using AutoMapper;
 using Project.UseCases;
+using Project.Models;
 
 namespace ProjectBE.Controllers;
 [Route("upload_banner")]
@@ -53,7 +54,7 @@ public class UploadBannerController : Controller
                     _dbContext.Banner.Remove(banner_to_delete);
                     _dbContext.SaveChanges();
 
-                    Project.Models.Banner _files_upload = new Project.Models.Banner();
+                    Banner _files_upload = new Banner();
                     _files_upload.ID = iddelete;
                     _files_upload.TYPE = firstfolder_name;
                     _files_upload.REALNAME = file.FileName.Substring(0, file.FileName.LastIndexOf("."));

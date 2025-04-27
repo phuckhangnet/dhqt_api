@@ -11,6 +11,8 @@ using InfluxDB3.Client;
 using InfluxDB3.Client.Write;
 using System.Diagnostics;
 using ProjectBE.Models;
+using Project.Data;
+using Project.Models;
 
 namespace ProjectBE.Controllers;
 [Route("article")]
@@ -19,12 +21,13 @@ public class ArticleController : Controller
     private readonly ILogger<ArticleController> _logger;
     private readonly IMediator _mediator;
     private readonly IConfiguration _config;
-
-    public ArticleController(ILogger<ArticleController> logger, IMediator mediator, IConfiguration config)
+    private DataContext _context;
+    public ArticleController(ILogger<ArticleController> logger, IMediator mediator, IConfiguration config, DataContext context)
     {
         _logger = logger;
         _mediator = mediator;
         _config = config;
+        _context = context;
 
     }
     [HttpPost("add")]
@@ -167,6 +170,63 @@ public class ArticleController : Controller
             var result = await conn.QueryAsync<dynamic>(sQuery);
             return result;
         }
+
+    }
+
+    [HttpGet("GetArticleBySlug")]
+    //[AuthorizeAttribute]
+    public async Task<dynamic> GetArticleBySlug(string slug)
+    {
+        return _context.Articles.Where(x => x.SLUG == slug).FirstOrDefault();
+
+    }
+
+    //muc-gioi-thieu---loi-noi-dau
+    [HttpGet("GetArticleMenuByArticleId")]
+    //[AuthorizeAttribute]
+    public async Task<dynamic> GetArticleMenuByArticleId(int articleId)
+    {
+        return _context.Article_Menu.Where(x => x.ARTICLEID == articleId).FirstOrDefault();
+
+    }
+
+    [HttpGet("GetArticleNull")]
+    //[AuthorizeAttribute]
+    public async Task<dynamic> GetArticleNull()
+    {
+        return from a in _context.Articles.ToList()
+               .Where(x => x.SLUG == null)
+               select new
+               {
+                   a.ID,
+                   a.TITLE,
+                   a.SUMMARY,
+                   a.AVATAR,
+                   a.HASTAG,
+                   a.LANGUAGE,
+                   a.STATUS,
+                   a.PRIORITYLEVEL,
+                   a.LINKED,
+                   a.LATESTEDITDATE,
+                   a.IDUSERCREATE,
+                   a.IDUSEREDIT,
+                   a.CREATEDATE,
+                   a.SLUG,
+                   a.PAGE
+               };
+
+    }
+
+    [HttpGet("UpdateArticle")]
+    //[AuthorizeAttribute]
+    public async Task<dynamic> GetArticleNull(int articleId, string slug)
+    {
+        Articles a = _context.Articles.Where(x => x.ID == articleId).FirstOrDefault();
+
+        a.SLUG = slug;
+        await _context.SaveChangesAsync();
+
+        return a.ID;
 
     }
 

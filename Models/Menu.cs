@@ -12,5 +12,6 @@ namespace Project.Models
         public Byte ISPAGE { get; set; }
         public Byte VISIBLE { get; set; }
         public string? SLUG { get; set; }
+        public string? PAGE { get; set; }
     }
 }
